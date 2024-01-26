@@ -21,10 +21,4 @@ class Url {
 
 		return get_admin_url( $blog_id, $slug ? "$slug.php" : '' );
 	}
-
-	public static function redirect( string $url, int $response_code = 303 ): void {
-		header( "Location: $url", true, $response_code );
-
-		exit;
-	}
 }

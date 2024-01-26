@@ -15,7 +15,6 @@ class Setup {
 	public function init(): void {
 		load_plugin_textdomain( KEY, false, Plugin\Fs::get_path( 'lang' ) );
 
-		new StatusNotice();
 		new Setting();
 		new WPDebug();
 		new PluginsScreen();

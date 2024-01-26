@@ -1,6 +1,6 @@
 === WPDA - Development Assistant ===
 
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Contributors: Dmitry Pripa
 Requires PHP: 7.2.0
 Requires at least: 5.0.0
@@ -13,6 +13,9 @@ Tags: development, debug, mailhog
 Managing the debug log from the admin panel and more.
 
 == Changelog ==
+
+	= 1.0.1
+	* Minor fixes and improvements
 
 	= 1.0.0
 	* Initial release

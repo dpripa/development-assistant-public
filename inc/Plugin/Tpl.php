@@ -14,6 +14,6 @@ class Tpl {
 	}
 
 	public static function render( string $name, array $args = array() ): void {
-		echo static::get( $name, $args ); // phpcs:ignore
+		echo wp_kses_post( static::get( $name, $args ) );
 	}
 }

@@ -47,14 +47,16 @@ class WPDebug {
 
 		if ( $is_dev_env ) {
 			$message = sprintf(
-				__( 'Disabled %s was detected in the development environment.', KEY ),
+				__( 'Disabled %s was detected in the development environment.', 'wpda-development-assistant' ),
 				$const_names
 			);
 		} else {
 			$message = sprintf(
-				__( 'Enabled %1$s was detected in the production environment. %2$s', KEY ),
+				__( 'Enabled %1$s was detected in the production environment. %2$s', 'wpda-development-assistant' ),
 				$const_names,
-				'<b>' . __( 'Don\'t leave it enabled unless you are debugging!', KEY ) . '</b>'
+				'<b>' .
+				__( 'Don\'t leave it enabled unless you are debugging to avoid the performance and security issues!', 'wpda-development-assistant' ) .
+				'</b>'
 			);
 		}
 

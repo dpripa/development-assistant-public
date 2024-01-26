@@ -37,11 +37,11 @@ class Setting {
 	}
 
 	public function add_page(): void {
-		$page_title = __( 'Development Assistant Settings', KEY );
+		$page_title = __( 'Development Assistant Settings', 'wpda-development-assistant' );
 
 		add_menu_page(
 			$page_title,
-			__( 'WPDA', KEY ),
+			__( 'WPDA', 'wpda-development-assistant' ),
 			'manage_options',
 			KEY,
 			array( $this, 'render_page' ),
@@ -52,7 +52,7 @@ class Setting {
 		add_submenu_page(
 			KEY,
 			$page_title,
-			__( 'Settings', KEY ),
+			__( 'Settings', 'wpda-development-assistant' ),
 			'manage_options',
 			KEY,
 			array( $this, 'render_page' )
@@ -90,13 +90,13 @@ class Setting {
 			return;
 		}
 
-		Plugin\Notice::add_transient( __( 'Settings saved!', KEY ), 'success' );
+		Plugin\Notice::add_transient( __( 'Settings saved!', 'wpda-development-assistant' ), 'success' );
 	}
 
 	protected function add_wp_debug_settings( string $key ): void {
 		add_settings_section(
 			$key,
-			esc_html__( 'WP Debug', KEY ),
+			esc_html__( 'WP Debug', 'wpda-development-assistant' ),
 			'',
 			KEY
 		);
@@ -108,7 +108,7 @@ class Setting {
 		);
 		add_settings_field(
 			static::ENABLE_WP_DEBUG_KEY,
-			wp_kses( __( 'Enable <code>WP_DEBUG</code>', KEY ), array( 'code' => array() ) ),
+			wp_kses( __( 'Enable <code>WP_DEBUG</code>', 'wpda-development-assistant' ), array( 'code' => array() ) ),
 			array( Control\Checkbox::class, 'render' ),
 			KEY,
 			$key,
@@ -125,7 +125,7 @@ class Setting {
 		);
 		add_settings_field(
 			static::ENABLE_WP_DEBUG_LOG_KEY,
-			wp_kses( __( 'Enable <code>WP_DEBUG_LOG</code>', KEY ), array( 'code' => array() ) ),
+			wp_kses( __( 'Enable <code>WP_DEBUG_LOG</code>', 'wpda-development-assistant' ), array( 'code' => array() ) ),
 			array( Control\Checkbox::class, 'render' ),
 			KEY,
 			$key,
@@ -142,7 +142,7 @@ class Setting {
 		);
 		add_settings_field(
 			static::ENABLE_WP_DEBUG_DISPLAY_KEY,
-			wp_kses( __( 'Enable <code>WP_DEBUG_DISPLAY</code>', KEY ), array( 'code' => array() ) ),
+			wp_kses( __( 'Enable <code>WP_DEBUG_DISPLAY</code>', 'wpda-development-assistant' ), array( 'code' => array() ) ),
 			array( Control\Checkbox::class, 'render' ),
 			KEY,
 			$key,
@@ -156,7 +156,7 @@ class Setting {
 	protected function add_plugin_screen_settings( string $key ): void {
 		add_settings_section(
 			$key,
-			esc_html__( 'Plugins Screen', KEY ),
+			esc_html__( 'Plugins Screen', 'wpda-development-assistant' ),
 			'',
 			KEY
 		);
@@ -168,7 +168,7 @@ class Setting {
 		);
 		add_settings_field(
 			static::ACTIVE_PLUGINS_FIRST_KEY,
-			esc_html__( 'Show active plugins first', KEY ),
+			esc_html__( 'Show active plugins first', 'wpda-development-assistant' ),
 			array( Control\Checkbox::class, 'render' ),
 			KEY,
 			$key,
@@ -182,7 +182,7 @@ class Setting {
 	protected function add_mail_hog_settings( string $key ): void {
 		add_settings_section(
 			$key,
-			esc_html__( 'MailHog', KEY ),
+			esc_html__( 'MailHog', 'wpda-development-assistant' ),
 			'',
 			KEY
 		);
@@ -194,7 +194,7 @@ class Setting {
 		);
 		add_settings_field(
 			static::REDIRECT_TO_MAIL_HOG_KEY,
-			esc_html__( 'Redirect emails to MailHog', KEY ),
+			esc_html__( 'Redirect emails to MailHog', 'wpda-development-assistant' ),
 			array( Control\Checkbox::class, 'render' ),
 			KEY,
 			$key,
@@ -209,7 +209,7 @@ class Setting {
 	protected function add_reset_settings( string $key ): void {
 		add_settings_section(
 			$key,
-			esc_html__( 'Reset', KEY ),
+			esc_html__( 'Reset', 'wpda-development-assistant' ),
 			'',
 			KEY
 		);
@@ -221,7 +221,7 @@ class Setting {
 		);
 		add_settings_field(
 			static::REDIRECT_TO_MAIL_HOG_KEY,
-			esc_html__( 'Reset plugin data when deactivated', KEY ),
+			esc_html__( 'Reset plugin data when deactivated', 'wpda-development-assistant' ),
 			array( Control\Checkbox::class, 'render' ),
 			KEY,
 			$key,

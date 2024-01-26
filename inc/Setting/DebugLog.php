@@ -23,8 +23,8 @@ class DebugLog {
 	public function add_page(): void {
 		add_submenu_page(
 			KEY,
-			__( 'debug.log', KEY ),
-			__( 'debug.log', KEY ),
+			__( 'debug.log', 'wpda-development-assistant' ),
+			__( 'debug.log', 'wpda-development-assistant' ),
 			'manage_options',
 			static::KEY,
 			array( $this, 'render_page' )
@@ -32,15 +32,15 @@ class DebugLog {
 	}
 
 	public function render_page(): void {
-		$link_delete_log = Plugin\Url::get_admin( 'admin' ) . '?page=' . KEY . '&' . static::DELETE_LOG_QUERY_KEY . '=yes';
+		$link_delete_log = static::get_page_url() . '&' . static::DELETE_LOG_QUERY_KEY . '=yes';
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			<a
 				href="<?php echo esc_url( $link_delete_log ); ?>"
-				onclick="return confirm('<?php echo esc_html__( 'Are you sure?', self::KEY ); ?>')"
+				onclick="return confirm('<?php echo esc_html__( 'Are you sure?', 'wpda-development-assistant' ); ?>')"
 			>
-				<?php echo esc_html__( 'Delete file', KEY ); ?>
+				<?php echo esc_html__( 'Delete file', 'wpda-development-assistant' ); ?>
 			</a>
 			<div style="margin-top: 10px; font-family: monospace;">
 				<?php
@@ -60,7 +60,7 @@ class DebugLog {
 		}
 
 		static::delete_file();
-		wp_safe_redirect( Plugin\Url::get_admin( 'admin' ) . '?page=' . KEY );
+		wp_safe_redirect( static::get_page_url() );
 	}
 
 	public static function store_original_file_existence(): void {
@@ -71,10 +71,14 @@ class DebugLog {
 	}
 
 	public static function delete_file_if_originally_not_exists(): void {
-		if ( 'yes' === get_option( static::ORIGINAL_EXISTENCE_KEY, static::ORIGINAL_EXISTENCE_DEFAULT ) ) {
-			static::delete_file();
+		if (
+			'yes' !== get_option( static::ORIGINAL_EXISTENCE_KEY, static::ORIGINAL_EXISTENCE_DEFAULT ) ||
+			! file_exists( static::LOG_FILE_PATH )
+		) {
+			return;
 		}
 
+		static::delete_file();
 		delete_option( static::ORIGINAL_EXISTENCE_KEY );
 	}
 
@@ -86,5 +90,9 @@ class DebugLog {
 		if ( ! unlink( static::LOG_FILE_PATH ) ) {
 			Plugin\Notice::add_transient( 'Can\'t delete the ' . static::LOG_FILE_PATH, 'error' );
 		}
+	}
+
+	protected function get_page_url(): string {
+		return Plugin\Url::get_admin( 'admin' ) . '?page=' . KEY;
 	}
 }

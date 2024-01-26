@@ -9,7 +9,7 @@ class StatusNotice {
 			return;
 		}
 
-		$content  = '<div style="font-weight: bold;">' . __( 'WPDA', KEY ) . '</div>';
+		$content  = '<div style="font-weight: bold;">' . __( 'WPDA', 'wpda-development-assistant' ) . '</div>';
 		$content .= $message;
 
 		Plugin\Notice::render( $content, "$level wpda-status" );

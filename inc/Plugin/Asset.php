@@ -13,7 +13,7 @@ class Asset {
 	protected const POSTFIX    = '.min';
 
 	public static function enqueue_script( string $name, array $deps = array(), array $args = array(), bool $in_footer = true ): void {
-		$key      = static::KEY . "_$name";
+		$key      = static::get_key( $name );
 		$filename = $name . static::POSTFIX . '.js';
 		$rel      = static::ASSET_DIR . '/' . static::SCRIPT_DIR . '/' . $filename;
 		$url      = static::get_url( $rel );
@@ -35,7 +35,7 @@ class Asset {
 	}
 
 	public static function enqueue_style( string $name, array $deps = array(), /* ?string|?array */ $addition = null ): void { // phpcs:ignore
-		$key      = static::KEY . "_$name";
+		$key      = static::get_key( $name );
 		$filename = $name . static::POSTFIX . '.css';
 		$rel      = static::ASSET_DIR . '/' . static::STYLE_DIR . '/' . $filename;
 		$url      = static::get_url( $rel );
@@ -65,18 +65,11 @@ class Asset {
 	}
 
 	public static function enqueue_external_script( string $name, string $url, bool $in_footer = true ): void {
-		wp_enqueue_script( static::KEY . "_$name", $url, false, null, $in_footer ); // phpcs:ignore
+		wp_enqueue_script( static::get_key( $name ), $url, false, null, $in_footer ); // phpcs:ignore
 	}
 
 	public static function enqueue_external_style( string $name, string $url ): void {
-		wp_enqueue_style( static::KEY . "_$name", $url, false, null ); // phpcs:ignore
-	}
-
-	public static function enqueue_args( string $name, array $args ): void {
-		$key = static::KEY . "_$name";
-
-		wp_register_script( $key, null, [], null ); // phpcs:ignore
-		wp_localize_script( $key, $key, $args );
+		wp_enqueue_style( static::get_key( $name ), $url, false, null ); // phpcs:ignore
 	}
 
 	protected static function get_url( string $rel ): string {
@@ -85,5 +78,9 @@ class Asset {
 
 	protected static function get_path( string $rel ): string {
 		return Fs::get_path( $rel );
+	}
+
+	protected static function get_key( string $name ): string {
+		return static::KEY . '_' . str_replace( '-', '_', $name );
 	}
 }
