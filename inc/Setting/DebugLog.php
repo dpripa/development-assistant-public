@@ -14,10 +14,8 @@ class DebugLog {
 	protected const DELETE_LOG_QUERY_KEY       = KEY . '_delete_debug_log';
 
 	public function __construct() {
-		if ( file_exists( static::LOG_FILE_PATH ) ) {
-			add_action( 'admin_menu', array( $this, 'add_page' ) );
-			add_action( 'admin_init', array( $this, 'delete_file_by_link' ) );
-		}
+		add_action( 'admin_menu', array( $this, 'add_page' ) );
+		add_action( 'admin_init', array( $this, 'delete_file_by_link' ) );
 	}
 
 	public function add_page(): void {
@@ -36,16 +34,24 @@ class DebugLog {
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
-			<a
-				href="<?php echo esc_url( $link_delete_log ); ?>"
-				onclick="return confirm('<?php echo esc_html__( 'Are you sure?', 'wpda-development-assistant' ); ?>')"
-			>
-				<?php echo esc_html__( 'Delete file', 'wpda-development-assistant' ); ?>
-			</a>
-			<div style="margin-top: 10px; font-family: monospace;">
-				<?php
-				echo wp_kses( nl2br( file_get_contents( static::LOG_FILE_PATH ) ), array( 'br' => array() ) ); // phpcs:ignore
-				?>
+			<?php if ( file_exists( static::LOG_FILE_PATH ) ) { ?>
+				<a
+					href="<?php echo esc_url( $link_delete_log ); ?>"
+					onclick="return confirm('<?php echo esc_html__( 'Are you sure?', 'wpda-development-assistant' ); ?>')"
+				>
+					<?php echo esc_html__( 'Delete file', 'wpda-development-assistant' ); ?>
+				</a>
+			<?php } ?>
+			<div style="margin-top: 10px;">
+				<?php if ( file_exists( static::LOG_FILE_PATH ) ) { ?>
+					<div style="font-family: monospace;">
+						<?php echo wp_kses( nl2br( file_get_contents( static::LOG_FILE_PATH ) ), array( 'br' => array() ) ); // phpcs:ignore ?>
+					</div>
+				<?php } else { ?>
+					<div style="font-style: italic;">
+						<?php echo esc_html__( 'Log is empty.', 'wpda-development-assistant' ); ?>
+					</div>
+				<?php } ?>
 			</div>
 		</div>
 		<?php
@@ -92,7 +98,7 @@ class DebugLog {
 		}
 	}
 
-	protected function get_page_url(): string {
-		return Plugin\Url::get_admin( 'admin' ) . '?page=' . KEY;
+	public static function get_page_url(): string {
+		return Plugin\Url::get_admin( 'admin' ) . '?page=' . static::KEY;
 	}
 }

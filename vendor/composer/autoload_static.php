@@ -38,6 +38,7 @@ class ComposerStaticInit1ac93cb5f7f957c8d59193dcd1a9e8c6
         'WPDevAssist\\PluginsScreen' => __DIR__ . '/../..' . '/inc/PluginsScreen.php',
         'WPDevAssist\\Setting' => __DIR__ . '/../..' . '/inc/Setting.php',
         'WPDevAssist\\Setting\\Control\\Checkbox' => __DIR__ . '/../..' . '/inc/Setting/Control/Checkbox.php',
+        'WPDevAssist\\Setting\\Control\\Control' => __DIR__ . '/../..' . '/inc/Setting/Control/Control.php',
         'WPDevAssist\\Setting\\DebugLog' => __DIR__ . '/../..' . '/inc/Setting/DebugLog.php',
         'WPDevAssist\\Setup' => __DIR__ . '/../..' . '/inc/Setup.php',
         'WPDevAssist\\StatusNotice' => __DIR__ . '/../..' . '/inc/StatusNotice.php',

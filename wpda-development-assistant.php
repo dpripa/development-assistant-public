@@ -3,7 +3,7 @@
  * Plugin Name: WPDA - Development Assistant
  * Plugin URI: https://github.com/dpripa/wp-dev-assist-public
  * Description: Managing the debug log from the admin panel and more.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Text Domain: wpda-development-assistant
  * Author: Dmitry Pripa
  * Author URI: https://dpripa.com

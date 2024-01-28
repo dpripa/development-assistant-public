@@ -3,18 +3,14 @@ namespace WPDevAssist\Setting\Control;
 
 defined( 'ABSPATH' ) || exit;
 
-class Checkbox {
+class Checkbox extends Control {
 	protected const REQUIRED_ARGS = array(
 		'name',
 		'default',
 	);
 
 	public static function render( array $args ): void {
-		foreach ( static::REQUIRED_ARGS as $required_arg ) {
-			if ( empty( $args[ $required_arg ] ) ) {
-				throw new \Exception( "The \"$required_arg\" argument is required" );
-			}
-		}
+		static::validate_required_args( $args );
 
 		$value = get_option( $args['name'], $args['default'] );
 		?>
@@ -34,12 +30,15 @@ class Checkbox {
 				>
 				<?php
 				if ( isset( $args['description'] ) ) {
-					echo esc_html( $args['description'] );
+					?>
+					<span class="wpda-setting-checkbox__description">
+						<?php echo wp_kses( $args['description'], array( 'span' => array( 'class' => array() ) ) ); ?>
+					</span>
+					<?php
 				}
 				?>
 			</label>
 		</div>
 		<?php
 	}
-
 }

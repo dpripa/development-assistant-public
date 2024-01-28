@@ -23,6 +23,7 @@ return array(
     'WPDevAssist\\PluginsScreen' => $baseDir . '/inc/PluginsScreen.php',
     'WPDevAssist\\Setting' => $baseDir . '/inc/Setting.php',
     'WPDevAssist\\Setting\\Control\\Checkbox' => $baseDir . '/inc/Setting/Control/Checkbox.php',
+    'WPDevAssist\\Setting\\Control\\Control' => $baseDir . '/inc/Setting/Control/Control.php',
     'WPDevAssist\\Setting\\DebugLog' => $baseDir . '/inc/Setting/DebugLog.php',
     'WPDevAssist\\Setup' => $baseDir . '/inc/Setup.php',
     'WPDevAssist\\StatusNotice' => $baseDir . '/inc/StatusNotice.php',

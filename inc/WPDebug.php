@@ -54,11 +54,15 @@ class WPDebug {
 			$message = sprintf(
 				__( 'Enabled %1$s was detected in the production environment. %2$s', 'wpda-development-assistant' ),
 				$const_names,
-				'<b>' .
+				'<br><b>' .
 				__( 'Don\'t leave it enabled unless you are debugging to avoid the performance and security issues!', 'wpda-development-assistant' ) .
 				'</b>'
 			);
 		}
+
+		$message .= '<br><a href="' . Setting::get_page_url() . '">';
+		$message .= __( 'Go to manage', 'wpda-development-assistant' );
+		$message .= '</a>';
 
 		StatusNotice::render( $message );
 	}
@@ -79,7 +83,13 @@ class WPDebug {
 		$config_content = static::read_config_content();
 
 		if ( empty( $config_content ) ) {
-			Plugin\Notice::add_transient( 'Can\'t read the ' . static::CONFIG_FILE_PATH, 'error' );
+			Plugin\Notice::add_transient(
+				sprintf(
+					__( 'Can\'t read the %s', 'wpda-development-assistant' ),
+					static::CONFIG_FILE_PATH
+				),
+				'error'
+			);
 		}
 
 		if ( static::is_debug_enabled() !== $is_debug_setting_enabled ) {
@@ -107,7 +117,13 @@ class WPDebug {
 		}
 
 		if ( empty( static::write_config_content( $config_content ) ) ) {
-			Plugin\Notice::add_transient( 'Can\'t write the ' . static::CONFIG_FILE_PATH, 'error' );
+			Plugin\Notice::add_transient(
+				sprintf(
+					__( 'Can\'t write the %s', 'wpda-development-assistant' ),
+					static::CONFIG_FILE_PATH
+				),
+				'error'
+			);
 		}
 	}
 
@@ -138,32 +154,38 @@ class WPDebug {
 			"define('" . $name . "', false);",
 		);
 
-		if ( 'enabled' === $value ) {
-			$config_content = str_replace(
-				$search,
-				"define( '" . $name . "', true );",
-				$config_content,
-				$count
-			);
+		switch ( $value ) {
+			case 'disabled':
+				return str_replace( $search, "define( '" . $name . "', false );", $config_content );
 
-			if ( $count ) {
-				return $config_content;
-			}
+			case 'enabled':
+				$config_content = str_replace(
+					$search,
+					"define( '" . $name . "', true );",
+					$config_content,
+					$count
+				);
 
-			return str_replace(
-				'$table_prefix',
-				"define('" . $name . "', true);" . "\r\n" . '$table_prefix', // phpcs:ignore
-				$config_content
-			);
-		} elseif ( 'missing' === $value ) {
-			return str_replace(
-				$search,
-				'',
-				$config_content
-			);
+				if ( $count ) {
+					return $config_content;
+				}
+
+				return str_replace(
+					'$table_prefix',
+					"define('" . $name . "', true);" . "\r\n" . '$table_prefix', // phpcs:ignore
+					$config_content
+				);
+
+			case 'missing':
+				return str_replace(
+					$search,
+					'',
+					$config_content
+				);
+
+			default:
+				throw new \Exception( "\"$value\" is not a allowed value" );
 		}
-
-		return str_replace( $search, "define( '" . $name . "', false );", $config_content );
 	}
 
 	protected static function write_config_content( string $content ): string {
@@ -209,7 +231,13 @@ class WPDebug {
 		$config_content = static::read_config_content();
 
 		if ( empty( $config_content ) ) {
-			Plugin\Notice::add_transient( 'Can\'t read the ' . static::CONFIG_FILE_PATH, 'error' );
+			Plugin\Notice::add_transient(
+				sprintf(
+					__( 'Can\'t read the %s', 'wpda-development-assistant' ),
+					static::CONFIG_FILE_PATH
+				),
+				'error'
+			);
 		}
 
 		$config_content = static::update_config_const(
@@ -229,7 +257,13 @@ class WPDebug {
 		);
 
 		if ( empty( static::write_config_content( $config_content ) ) ) {
-			Plugin\Notice::add_transient( 'Can\'t write the ' . static::CONFIG_FILE_PATH, 'error' );
+			Plugin\Notice::add_transient(
+				sprintf(
+					__( 'Can\'t write the %s', 'wpda-development-assistant' ),
+					static::CONFIG_FILE_PATH
+				),
+				'error'
+			);
 
 			return;
 		}
