@@ -47,21 +47,21 @@ class WPDebug {
 
 		if ( $is_dev_env ) {
 			$message = sprintf(
-				__( 'Disabled %s was detected in the development environment.', 'wpda-development-assistant' ),
+				__( 'Disabled %s was detected in the development environment.', 'development-assistant' ),
 				$const_names
 			);
 		} else {
 			$message = sprintf(
-				__( 'Enabled %1$s was detected in the production environment. %2$s', 'wpda-development-assistant' ),
+				__( 'Enabled %1$s was detected in the production environment. %2$s', 'development-assistant' ),
 				$const_names,
 				'<br><b>' .
-				__( 'Don\'t leave it enabled unless you are debugging to avoid the performance and security issues!', 'wpda-development-assistant' ) .
+				__( 'Don\'t leave it enabled unless you are debugging to avoid the performance and security issues!', 'development-assistant' ) .
 				'</b>'
 			);
 		}
 
 		$message .= '<br><a href="' . Setting::get_page_url() . '">';
-		$message .= __( 'Go to manage', 'wpda-development-assistant' );
+		$message .= __( 'Go to manage', 'development-assistant' );
 		$message .= '</a>';
 
 		StatusNotice::render( $message );
@@ -85,7 +85,7 @@ class WPDebug {
 		if ( empty( $config_content ) ) {
 			Plugin\Notice::add_transient(
 				sprintf(
-					__( 'Can\'t read the %s', 'wpda-development-assistant' ),
+					__( 'Can\'t read the %s', 'development-assistant' ),
 					static::CONFIG_FILE_PATH
 				),
 				'error'
@@ -119,7 +119,7 @@ class WPDebug {
 		if ( empty( static::write_config_content( $config_content ) ) ) {
 			Plugin\Notice::add_transient(
 				sprintf(
-					__( 'Can\'t write the %s', 'wpda-development-assistant' ),
+					__( 'Can\'t write the %s', 'development-assistant' ),
 					static::CONFIG_FILE_PATH
 				),
 				'error'
@@ -233,7 +233,7 @@ class WPDebug {
 		if ( empty( $config_content ) ) {
 			Plugin\Notice::add_transient(
 				sprintf(
-					__( 'Can\'t read the %s', 'wpda-development-assistant' ),
+					__( 'Can\'t read the %s', 'development-assistant' ),
 					static::CONFIG_FILE_PATH
 				),
 				'error'
@@ -259,7 +259,7 @@ class WPDebug {
 		if ( empty( static::write_config_content( $config_content ) ) ) {
 			Plugin\Notice::add_transient(
 				sprintf(
-					__( 'Can\'t write the %s', 'wpda-development-assistant' ),
+					__( 'Can\'t write the %s', 'development-assistant' ),
 					static::CONFIG_FILE_PATH
 				),
 				'error'

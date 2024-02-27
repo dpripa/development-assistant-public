@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: WPDA - Development Assistant
- * Plugin URI: https://github.com/dpripa/wp-dev-assist-public
- * Description: Managing the debug log from the admin panel and more.
- * Version: 1.0.2
- * Text Domain: wpda-development-assistant
+ * Plugin Name: Development Assistant
+ * Plugin URI: https://github.com/dpripa/development-assistant-public
+ * Description: A collection of tools for developers: manage debugging and view logs directly from the admin panel, configure MailHog in one click and much more.
+ * Version: 1.0.3
+ * Text Domain: development-assistant
  * Author: Dmitry Pripa
  * Author URI: https://dpripa.com
  * Requires PHP: 7.2.0

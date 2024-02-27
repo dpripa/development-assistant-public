@@ -38,11 +38,11 @@ class Setting {
 	}
 
 	public function add_page(): void {
-		$page_title = __( 'Development Assistant Settings', 'wpda-development-assistant' );
+		$page_title = __( 'Development Assistant Settings', 'development-assistant' );
 
 		add_menu_page(
 			$page_title,
-			__( 'WPDA', 'wpda-development-assistant' ),
+			__( 'Development Assistant', 'development-assistant' ),
 			'manage_options',
 			KEY,
 			array( $this, 'render_page' ),
@@ -53,7 +53,7 @@ class Setting {
 		add_submenu_page(
 			KEY,
 			$page_title,
-			__( 'Settings', 'wpda-development-assistant' ),
+			__( 'Settings', 'development-assistant' ),
 			'manage_options',
 			KEY,
 			array( $this, 'render_page' )
@@ -91,7 +91,7 @@ class Setting {
 			return;
 		}
 
-		Plugin\Notice::add_transient( __( 'Settings saved!', 'wpda-development-assistant' ), 'success' );
+		Plugin\Notice::add_transient( __( 'Settings saved!', 'development-assistant' ), 'success' );
 	}
 
 	public function enqueue_assets(): void {
@@ -107,7 +107,7 @@ class Setting {
 	protected function add_wp_debug_settings( string $key ): void {
 		add_settings_section(
 			$key,
-			esc_html__( 'WP Debug', 'wpda-development-assistant' ),
+			esc_html__( 'WP Debug', 'development-assistant' ),
 			array( $this, 'render_wp_debug_description' ),
 			KEY
 		);
@@ -119,7 +119,7 @@ class Setting {
 		);
 		add_settings_field(
 			static::ENABLE_WP_DEBUG_KEY,
-			wp_kses( __( 'Enable <code>WP_DEBUG</code>', 'wpda-development-assistant' ), array( 'code' => array() ) ),
+			wp_kses( __( 'Enable <code>WP_DEBUG</code>', 'development-assistant' ), array( 'code' => array() ) ),
 			array( Control\Checkbox::class, 'render' ),
 			KEY,
 			$key,
@@ -136,7 +136,7 @@ class Setting {
 		);
 		add_settings_field(
 			static::ENABLE_WP_DEBUG_LOG_KEY,
-			wp_kses( __( 'Enable <code>WP_DEBUG_LOG</code>', 'wpda-development-assistant' ), array( 'code' => array() ) ),
+			wp_kses( __( 'Enable <code>WP_DEBUG_LOG</code>', 'development-assistant' ), array( 'code' => array() ) ),
 			array( Control\Checkbox::class, 'render' ),
 			KEY,
 			$key,
@@ -153,7 +153,7 @@ class Setting {
 		);
 		add_settings_field(
 			static::ENABLE_WP_DEBUG_DISPLAY_KEY,
-			wp_kses( __( 'Enable <code>WP_DEBUG_DISPLAY</code>', 'wpda-development-assistant' ), array( 'code' => array() ) ),
+			wp_kses( __( 'Enable <code>WP_DEBUG_DISPLAY</code>', 'development-assistant' ), array( 'code' => array() ) ),
 			array( Control\Checkbox::class, 'render' ),
 			KEY,
 			$key,
@@ -169,7 +169,7 @@ class Setting {
 		<div>
 			<?php
 			echo sprintf(
-				esc_html__( 'These options allow you to safely control the debug mod without the need to manually edit the %s.', 'wpda-development-assistant' ),
+				esc_html__( 'These options allow you to safely control the debug constants without the need to manually edit the %s.', 'development-assistant' ),
 				'<code>wp-config.php</code>'
 			);
 			?>
@@ -177,7 +177,7 @@ class Setting {
 				<a href="<?php echo esc_url( Setting\DebugLog::get_page_url() ); ?>">
 					<?php
 					echo sprintf(
-						esc_html__( 'Read %s', 'wpda-development-assistant' ),
+						esc_html__( 'Read %s', 'development-assistant' ),
 						'<code>debug.log</code>'
 					);
 					?>
@@ -190,7 +190,7 @@ class Setting {
 	protected function add_plugin_screen_settings( string $key ): void {
 		add_settings_section(
 			$key,
-			esc_html__( 'Plugins Screen', 'wpda-development-assistant' ),
+			esc_html__( 'Plugins Screen', 'development-assistant' ),
 			'',
 			KEY
 		);
@@ -202,7 +202,7 @@ class Setting {
 		);
 		add_settings_field(
 			static::ACTIVE_PLUGINS_FIRST_KEY,
-			esc_html__( 'Show active plugins first', 'wpda-development-assistant' ),
+			esc_html__( 'Show active plugins first', 'development-assistant' ),
 			array( Control\Checkbox::class, 'render' ),
 			KEY,
 			$key,
@@ -214,16 +214,14 @@ class Setting {
 	}
 
 	protected function add_mail_hog_settings( string $key ): void {
-		$info_link = '<a
-			href="https://github.com/mailhog/MailHog"
-			class="dashicons dashicons-info-outline"
-			style="margin-left: 7px; width: 18px; height: 18px; font-size: 18px; text-decoration: none;"
-			target="_blank"
-		></a>';
+		$info_link = $this->get_title_info_link(
+			'https://github.com/mailhog/MailHog',
+			__( 'What it is?', 'development-assistant' )
+		);
 
 		add_settings_section(
 			$key,
-			esc_html__( 'MailHog', 'wpda-development-assistant' ) . $info_link,
+			esc_html__( 'MailHog', 'development-assistant' ) . $info_link,
 			'',
 			KEY
 		);
@@ -235,7 +233,7 @@ class Setting {
 
 		if ( ! Plugin\Env::is_dev() ) {
 			$args['disabled']    = true;
-			$args['description'] = __( 'MailHog isn\'t available on the production environment.', 'wpda-development-assistant' );
+			$args['description'] = __( 'MailHog isn\'t available on the production environment.', 'development-assistant' );
 		}
 
 		register_setting(
@@ -245,7 +243,7 @@ class Setting {
 		);
 		add_settings_field(
 			static::REDIRECT_TO_MAIL_HOG_KEY,
-			esc_html__( 'Redirect emails to MailHog', 'wpda-development-assistant' ),
+			esc_html__( 'Redirect emails to MailHog', 'development-assistant' ),
 			array( Control\Checkbox::class, 'render' ),
 			KEY,
 			$key,
@@ -256,8 +254,8 @@ class Setting {
 	protected function add_reset_settings( string $key ): void {
 		add_settings_section(
 			$key,
-			esc_html__( 'Reset', 'wpda-development-assistant' ),
-			'',
+			esc_html__( 'Reset', 'development-assistant' ),
+			array( $this, 'render_reset_description' ),
 			KEY
 		);
 
@@ -268,7 +266,7 @@ class Setting {
 		);
 		add_settings_field(
 			static::REDIRECT_TO_MAIL_HOG_KEY,
-			esc_html__( 'Reset plugin data when deactivated', 'wpda-development-assistant' ),
+			esc_html__( 'Reset plugin data when deactivated', 'development-assistant' ),
 			array( Control\Checkbox::class, 'render' ),
 			KEY,
 			$key,
@@ -277,6 +275,26 @@ class Setting {
 				'default' => static::RESET_DEFAULT,
 			)
 		);
+	}
+
+	public function render_reset_description() {
+		?>
+		<?php echo esc_html__( 'It will make look like the plugin was never installed and will undo any changes that may have been made using it. In details:', 'development-assistant' ); ?>
+		<ul class="da-setting-list">
+			<li><?php echo esc_html__( 'all plugin setting and data that was added to database will be deleted;', 'development-assistant' ); ?></li>
+			<li><?php echo esc_html__( 'all debug constants will be reset to the states specified before the plugin was activated.', 'development-assistant' ); ?></li>
+		</ul>
+		<?php
+	}
+
+	protected function get_title_info_link( string $href, string $title ): string {
+		return '<a
+			href="' . esc_url( $href ) . '"
+			class="dashicons dashicons-info-outline"
+			style="margin-left: 7px; width: 18px; height: 18px; font-size: 18px; text-decoration: none;"
+			target="_blank"
+			title="' . esc_attr( $title ) . '"
+		></a>';
 	}
 
 	public static function add_default_options(): void {

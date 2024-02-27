@@ -1,8 +1,8 @@
 <?php return array(
     'root' => array(
-        'name' => 'dpripa/wp-dev-assist',
-        'pretty_version' => '1.0.2',
-        'version' => '1.0.2.0',
+        'name' => 'dpripa/development-assistant',
+        'pretty_version' => '1.0.3',
+        'version' => '1.0.3.0',
         'reference' => NULL,
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
@@ -10,9 +10,9 @@
         'dev' => false,
     ),
     'versions' => array(
-        'dpripa/wp-dev-assist' => array(
-            'pretty_version' => '1.0.2',
-            'version' => '1.0.2.0',
+        'dpripa/development-assistant' => array(
+            'pretty_version' => '1.0.3',
+            'version' => '1.0.3.0',
             'reference' => NULL,
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',

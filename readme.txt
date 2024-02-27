@@ -1,6 +1,6 @@
-=== WPDA - Development Assistant ===
+=== Development Assistant ===
 
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 Contributors: Dmitry Pripa
 Requires PHP: 7.2.0
 Requires at least: 5.0.0
@@ -10,9 +10,12 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: development, debug, mailhog
 
 == Description ==
-Managing the debug log from the admin panel and more.
+A collection of tools for developers: manage debugging and view logs directly from the admin panel, configure MailHog in one click and much more.
 
 == Changelog ==
+
+	= 1.0.3
+	* UX improvements
 
 	= 1.0.2
 	* UX improvements

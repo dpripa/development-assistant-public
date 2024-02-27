@@ -14,7 +14,7 @@ class Checkbox extends Control {
 
 		$value = get_option( $args['name'], $args['default'] );
 		?>
-		<div class="wpda-setting-checkbox">
+		<div class="da-setting-checkbox">
 			<input
 				type="hidden"
 				name="<?php echo esc_attr( $args['name'] ); ?>"
@@ -31,8 +31,8 @@ class Checkbox extends Control {
 				<?php
 				if ( isset( $args['description'] ) ) {
 					?>
-					<span class="wpda-setting-checkbox__description">
-						<?php echo wp_kses( $args['description'], array( 'span' => array( 'class' => array() ) ) ); ?>
+					<span class="da-setting-checkbox__description">
+						<?php echo wp_kses_post( $args['description'] ); ?>
 					</span>
 					<?php
 				}

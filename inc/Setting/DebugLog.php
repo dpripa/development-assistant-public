@@ -16,13 +16,14 @@ class DebugLog {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
 		add_action( 'admin_init', array( $this, 'delete_file_by_link' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 	}
 
 	public function add_page(): void {
 		add_submenu_page(
 			KEY,
-			__( 'debug.log', 'wpda-development-assistant' ),
-			__( 'debug.log', 'wpda-development-assistant' ),
+			__( 'debug.log', 'development-assistant' ),
+			__( 'debug.log', 'development-assistant' ),
 			'manage_options',
 			static::KEY,
 			array( $this, 'render_page' )
@@ -37,9 +38,9 @@ class DebugLog {
 			<?php if ( file_exists( static::LOG_FILE_PATH ) ) { ?>
 				<a
 					href="<?php echo esc_url( $link_delete_log ); ?>"
-					onclick="return confirm('<?php echo esc_html__( 'Are you sure?', 'wpda-development-assistant' ); ?>')"
+					onclick="return confirm('<?php echo esc_html__( 'Are you sure?', 'development-assistant' ); ?>')"
 				>
-					<?php echo esc_html__( 'Delete file', 'wpda-development-assistant' ); ?>
+					<?php echo esc_html__( 'Delete file', 'development-assistant' ); ?>
 				</a>
 			<?php } ?>
 			<div style="margin-top: 10px;">
@@ -49,7 +50,7 @@ class DebugLog {
 					</div>
 				<?php } else { ?>
 					<div style="font-style: italic;">
-						<?php echo esc_html__( 'Log is empty.', 'wpda-development-assistant' ); ?>
+						<?php echo esc_html__( 'Log is empty.', 'development-assistant' ); ?>
 					</div>
 				<?php } ?>
 			</div>
@@ -100,5 +101,15 @@ class DebugLog {
 
 	public static function get_page_url(): string {
 		return Plugin\Url::get_admin( 'admin' ) . '?page=' . static::KEY;
+	}
+
+	public function enqueue_assets(): void {
+		global $current_screen;
+
+		if ( 'toplevel_page_' . static::KEY !== $current_screen->id ) {
+			return;
+		}
+
+		Plugin\Asset::enqueue_script( 'debug-log' );
 	}
 }

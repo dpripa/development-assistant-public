@@ -9,10 +9,10 @@ class StatusNotice {
 			return;
 		}
 
-		$content  = '<div style="font-weight: bold;">' . __( 'WPDA', 'wpda-development-assistant' ) . '</div>';
+		$content  = '<div style="font-weight: bold; margin-bottom: 5px;">' . __( 'Development Assistant', 'development-assistant' ) . '</div>';
 		$content .= $message;
 
-		Plugin\Notice::render( $content, "$level wpda-status" );
+		Plugin\Notice::render( $content, "$level da-status" );
 	}
 
 	protected static function is_destination_page(): bool {

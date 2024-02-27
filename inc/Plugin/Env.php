@@ -4,7 +4,7 @@ namespace WPDevAssist\Plugin;
 defined( 'ABSPATH' ) || exit;
 
 class Env {
-	protected const DEV_HOSTS = array(
+	protected $dev_hosts = array(
 		'localhost',
 		'local',
 		'loc',
@@ -12,14 +12,21 @@ class Env {
 		'dev',
 	);
 
-	protected static $root_host;
+	protected $dev_envs = array(
+		'development',
+		'local',
+	);
+
+	protected static $is_dev;
 
 	public function __construct() {
-		$host              = explode( '.', wp_parse_url( Url::get_home(), PHP_URL_HOST ) );
-		static::$root_host = end( $host );
+		$host           = explode( '.', wp_parse_url( Url::get_home(), PHP_URL_HOST ) );
+		$root_host      = end( $host );
+		static::$is_dev = in_array( $root_host, $this->dev_hosts, true ) ||
+			in_array( wp_get_environment_type(), $this->dev_envs, true );
 	}
 
 	public static function is_dev(): bool {
-		return in_array( static::$root_host, static::DEV_HOSTS, true );
+		return static::$is_dev;
 	}
 }
