@@ -5,13 +5,7 @@ defined( 'ABSPATH' ) || exit;
 
 class Url {
 	public static function get_current(): string {
-		$path = add_query_arg( null, null );
-
-		return static::get_home( $path );
-	}
-
-	public static function get_home( string $path = '/' ): string {
-		return home_url( $path );
+		return home_url( add_query_arg( null, null ) );
 	}
 
 	public static function get_admin( string $slug = '', ?int $blog_id = 0 ): string {

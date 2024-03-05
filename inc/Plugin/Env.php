@@ -20,7 +20,7 @@ class Env {
 	protected static $is_dev;
 
 	public function __construct() {
-		$host           = explode( '.', wp_parse_url( Url::get_home(), PHP_URL_HOST ) );
+		$host           = explode( '.', wp_parse_url( home_url(), PHP_URL_HOST ) );
 		$root_host      = end( $host );
 		static::$is_dev = in_array( $root_host, $this->dev_hosts, true ) ||
 			in_array( wp_get_environment_type(), $this->dev_envs, true );

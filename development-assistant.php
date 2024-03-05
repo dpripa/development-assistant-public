@@ -3,7 +3,7 @@
  * Plugin Name: Development Assistant
  * Plugin URI: https://github.com/dpripa/development-assistant-public
  * Description: A collection of tools for development and support. Manage debugging and view logs directly from the admin panel, configure MailHog in one click and much more.
- * Version: 1.1.1
+ * Version: 1.1.2
  * Text Domain: development-assistant
  * Author: Dmitry Pripa
  * Author URI: https://dpripa.com

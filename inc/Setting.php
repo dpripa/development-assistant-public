@@ -38,7 +38,7 @@ class Setting {
 	}
 
 	public static function get_menu_title( bool $lowercase = false ): string {
-		$title = __( 'DevAssist', 'development-assistant' );
+		$title = __( 'DevAssistant', 'development-assistant' );
 
 		return $lowercase ? mb_strtolower( $title ) : $title;
 	}

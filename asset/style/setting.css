@@ -1,0 +1,11 @@
+.da-setting-checkbox__description {
+  display: inline-block;
+  margin-left: 10px; }
+
+input:disabled + .da-setting-checkbox__description {
+  color: rgba(29, 35, 39, 0.45); }
+
+.da-setting-list {
+  padding-left: 20px;
+  list-style: disc; }
+

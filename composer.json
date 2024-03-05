@@ -1,0 +1,39 @@
+{
+  "name": "dpripa/development-assistant",
+  "version": "1.1.2",
+  "type": "wordpress-plugin",
+  "description": "A collection of tools for development and support. Manage debugging and view logs directly from the admin panel, configure MailHog in one click and much more.",
+  "homepage": "https://github.com/dpripa/development-assistant-public",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Dmitry Pripa",
+      "email": "i@dpripa.com",
+      "homepage": "https://dpripa.com"
+    }
+  ],
+  "keywords": [
+    "wordpress"
+  ],
+  "config": {
+    "platform-check": false,
+    "optimize-autoloader": true
+  },
+  "autoload": {
+    "psr-4": {
+      "WPDevAssist\\": "inc/"
+    }
+  },
+  "require": {
+    "php": ">=7.2.0"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.3.1",
+    "wp-coding-standards/wpcs": "^2.2.1"
+  },
+  "scripts": {
+    "no-dev": "composer install --no-dev",
+    "lint": "phpcs",
+    "fix": "phpcbf"
+  }
+}

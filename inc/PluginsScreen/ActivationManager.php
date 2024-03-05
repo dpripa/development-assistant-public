@@ -112,7 +112,7 @@ class ActivationManager {
 		$redirect_to = Plugin\Url::get_admin( 'plugins' );
 
 		if (
-			isset( $_GET[ static::DEACTIVATION_RESET_QUERY_KEY ] ) ||
+			isset( $_GET[ static::DEACTIVATION_RESET_QUERY_KEY ] ) &&
 			sanitize_text_field( wp_unslash( $_GET[ static::DEACTIVATION_RESET_QUERY_KEY ] ) )
 		) {
 			deactivate_plugins( array( NAME . '/' . NAME . '.php' ) );
