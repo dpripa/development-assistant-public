@@ -1,6 +1,6 @@
 === Development Assistant ===
 
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Contributors: Dmitry Pripa
 Requires PHP: 7.2.0
 Requires at least: 5.0.0
@@ -13,6 +13,9 @@ Tags: development, debug, mailhog
 A collection of tools for development and support. Manage debugging and view logs directly from the admin panel, configure MailHog in one click and much more.
 
 == Changelog ==
+
+	= 1.1.1
+	* Minor fixes
 
 	= 1.1.0
 	* Added ability to temporarily deactivate plugins and reactivate them all on one-click

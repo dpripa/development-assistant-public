@@ -116,10 +116,13 @@ class ActivationManager {
 			sanitize_text_field( wp_unslash( $_GET[ static::DEACTIVATION_RESET_QUERY_KEY ] ) )
 		) {
 			deactivate_plugins( array( NAME . '/' . NAME . '.php' ) );
-			wp_safe_redirect( add_query_arg( array( 'deactivate' => 'yes' ), $redirect_to ) );
+
+			$redirect_to = add_query_arg( array( 'deactivate' => 'yes' ), $redirect_to );
+
+		} else {
+			Plugin\Notice::add_transient( __( 'Plugin(s) activated.', 'development-assistant' ), 'success' );
 		}
 
-		Plugin\Notice::add_transient( __( 'Plugin(s) activated.', 'development-assistant' ), 'success' );
 		wp_safe_redirect( $redirect_to );
 	}
 
