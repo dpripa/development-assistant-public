@@ -47,15 +47,18 @@ class WPDebug {
 
 		if ( $is_dev_env ) {
 			$message = sprintf(
-				__( 'Disabled %s was detected in the development environment.', 'development-assistant' ),
-				$const_names
+				__( 'Disabled %1$s was detected in the development environment. %2$s', 'development-assistant' ),
+				$const_names,
+				'<br><b>' .
+				__( 'Don\'t forget to enable this when you start developing.', 'development-assistant' ) .
+				'</b>'
 			);
 		} else {
 			$message = sprintf(
 				__( 'Enabled %1$s was detected in the production environment. %2$s', 'development-assistant' ),
 				$const_names,
 				'<br><b>' .
-				__( 'Don\'t leave it enabled unless you are debugging to avoid the performance and security issues!', 'development-assistant' ) .
+				__( 'Don\'t leave it enabled unless you are debugging to avoid the performance and security issues.', 'development-assistant' ) .
 				'</b>'
 			);
 		}
@@ -85,7 +88,7 @@ class WPDebug {
 		if ( empty( $config_content ) ) {
 			Plugin\Notice::add_transient(
 				sprintf(
-					__( 'Can\'t read the %s', 'development-assistant' ),
+					__( 'Can\'t read the %s.', 'development-assistant' ),
 					static::CONFIG_FILE_PATH
 				),
 				'error'
@@ -119,7 +122,7 @@ class WPDebug {
 		if ( empty( static::write_config_content( $config_content ) ) ) {
 			Plugin\Notice::add_transient(
 				sprintf(
-					__( 'Can\'t write the %s', 'development-assistant' ),
+					__( 'Can\'t write the %s.', 'development-assistant' ),
 					static::CONFIG_FILE_PATH
 				),
 				'error'
@@ -233,7 +236,7 @@ class WPDebug {
 		if ( empty( $config_content ) ) {
 			Plugin\Notice::add_transient(
 				sprintf(
-					__( 'Can\'t read the %s', 'development-assistant' ),
+					__( 'Can\'t read the %s.', 'development-assistant' ),
 					static::CONFIG_FILE_PATH
 				),
 				'error'
@@ -259,7 +262,7 @@ class WPDebug {
 		if ( empty( static::write_config_content( $config_content ) ) ) {
 			Plugin\Notice::add_transient(
 				sprintf(
-					__( 'Can\'t write the %s', 'development-assistant' ),
+					__( 'Can\'t write the %s.', 'development-assistant' ),
 					static::CONFIG_FILE_PATH
 				),
 				'error'

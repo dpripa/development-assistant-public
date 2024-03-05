@@ -37,12 +37,18 @@ class Setting {
 		new Setting\DebugLog();
 	}
 
+	public static function get_menu_title( bool $lowercase = false ): string {
+		$title = __( 'DevAssist', 'development-assistant' );
+
+		return $lowercase ? mb_strtolower( $title ) : $title;
+	}
+
 	public function add_page(): void {
 		$page_title = __( 'Development Assistant Settings', 'development-assistant' );
 
 		add_menu_page(
 			$page_title,
-			__( 'Development Assistant', 'development-assistant' ),
+			static::get_menu_title(),
 			'manage_options',
 			KEY,
 			array( $this, 'render_page' ),
@@ -91,7 +97,7 @@ class Setting {
 			return;
 		}
 
-		Plugin\Notice::add_transient( __( 'Settings saved!', 'development-assistant' ), 'success' );
+		Plugin\Notice::add_transient( __( 'Settings saved.', 'development-assistant' ), 'success' );
 	}
 
 	public function enqueue_assets(): void {
@@ -177,7 +183,7 @@ class Setting {
 				<a href="<?php echo esc_url( Setting\DebugLog::get_page_url() ); ?>">
 					<?php
 					echo sprintf(
-						esc_html__( 'Read %s', 'development-assistant' ),
+						esc_html__( 'Go to %s', 'development-assistant' ),
 						'<code>debug.log</code>'
 					);
 					?>
@@ -233,7 +239,7 @@ class Setting {
 
 		if ( ! Plugin\Env::is_dev() ) {
 			$args['disabled']    = true;
-			$args['description'] = __( 'MailHog isn\'t available on the production environment.', 'development-assistant' );
+			$args['description'] = __( 'MailHog isn\'t available in the production environment.', 'development-assistant' );
 		}
 
 		register_setting(
@@ -261,11 +267,11 @@ class Setting {
 
 		register_setting(
 			KEY,
-			static::REDIRECT_TO_MAIL_HOG_KEY,
+			static::RESET_KEY,
 			'sanitize_text_field'
 		);
 		add_settings_field(
-			static::REDIRECT_TO_MAIL_HOG_KEY,
+			static::RESET_KEY,
 			esc_html__( 'Reset plugin data when deactivated', 'development-assistant' ),
 			array( Control\Checkbox::class, 'render' ),
 			KEY,
@@ -281,8 +287,10 @@ class Setting {
 		?>
 		<?php echo esc_html__( 'It will make look like the plugin was never installed and will undo any changes that may have been made using it. In details:', 'development-assistant' ); ?>
 		<ul class="da-setting-list">
-			<li><?php echo esc_html__( 'all plugin setting and data that was added to database will be deleted;', 'development-assistant' ); ?></li>
-			<li><?php echo esc_html__( 'all debug constants will be reset to the states specified before the plugin was activated.', 'development-assistant' ); ?></li>
+			<li><?php echo esc_html__( 'all plugin setting and data that was added to database will be deleted', 'development-assistant' ); ?>;</li>
+			<li><?php echo esc_html__( 'all debug constants will be reset to the states specified before the plugin was activated', 'development-assistant' ); ?>;</li>
+			<li><?php echo esc_html__( 'the debug.log file will be deleted if it didn\'t exist before the plugin was activated', 'development-assistant' ); ?>;</li>
+			<li><?php echo esc_html__( 'all temporarily deactivated plugins will be activated', 'development-assistant' ); ?>.</li>
 		</ul>
 		<?php
 	}

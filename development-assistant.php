@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Development Assistant
  * Plugin URI: https://github.com/dpripa/development-assistant-public
- * Description: A collection of tools for developers: manage debugging and view logs directly from the admin panel, configure MailHog in one click and much more.
- * Version: 1.0.3
+ * Description: A collection of tools for development and support. Manage debugging and view logs directly from the admin panel, configure MailHog in one click and much more.
+ * Version: 1.1.0
  * Text Domain: development-assistant
  * Author: Dmitry Pripa
  * Author URI: https://dpripa.com
@@ -17,6 +17,7 @@ namespace WPDevAssist;
 defined( 'ABSPATH' ) || exit;
 
 const KEY       = 'wp_dev_assist';
+const NAME      = 'development-assistant';
 const ROOT_FILE = __FILE__;
 
 $autoload = __DIR__ . '/vendor/autoload.php';

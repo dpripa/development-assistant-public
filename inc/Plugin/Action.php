@@ -45,7 +45,7 @@ class Action {
 				throw new \Exception( "The \"$name\" action isn't defined" );
 			}
 
-			return add_query_arg( $url, array( 'action' => static::KEY . '_' . $name ) );
+			return add_query_arg( array( 'action' => static::KEY . '_' . $name ), $url );
 		}
 
 		return $url;

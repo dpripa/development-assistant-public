@@ -9,7 +9,7 @@ class StatusNotice {
 			return;
 		}
 
-		$content  = '<div style="font-weight: bold; margin-bottom: 5px;">' . __( 'Development Assistant', 'development-assistant' ) . '</div>';
+		$content  = '<div style="font-weight: bold; margin-bottom: 5px;">' . __( 'Tip form Development Assistant', 'development-assistant' ) . '</div>';
 		$content .= $message;
 
 		Plugin\Notice::render( $content, "$level da-status" );

@@ -21,6 +21,8 @@ return array(
     'WPDevAssist\\Plugin\\Tpl' => $baseDir . '/inc/Plugin/Tpl.php',
     'WPDevAssist\\Plugin\\Url' => $baseDir . '/inc/Plugin/Url.php',
     'WPDevAssist\\PluginsScreen' => $baseDir . '/inc/PluginsScreen.php',
+    'WPDevAssist\\PluginsScreen\\ActivationManager' => $baseDir . '/inc/PluginsScreen/ActivationManager.php',
+    'WPDevAssist\\PluginsScreen\\Downloader' => $baseDir . '/inc/PluginsScreen/Downloader.php',
     'WPDevAssist\\Setting' => $baseDir . '/inc/Setting.php',
     'WPDevAssist\\Setting\\Control\\Checkbox' => $baseDir . '/inc/Setting/Control/Checkbox.php',
     'WPDevAssist\\Setting\\Control\\Control' => $baseDir . '/inc/Setting/Control/Control.php',

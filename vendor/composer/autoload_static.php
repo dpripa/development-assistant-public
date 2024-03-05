@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit65e228ae56716cbd97f75e8350dead38
+class ComposerStaticInit231bd0012f3f7f1937f432931bd5c7c7
 {
     public static $prefixLengthsPsr4 = array (
         'W' => 
@@ -36,6 +36,8 @@ class ComposerStaticInit65e228ae56716cbd97f75e8350dead38
         'WPDevAssist\\Plugin\\Tpl' => __DIR__ . '/../..' . '/inc/Plugin/Tpl.php',
         'WPDevAssist\\Plugin\\Url' => __DIR__ . '/../..' . '/inc/Plugin/Url.php',
         'WPDevAssist\\PluginsScreen' => __DIR__ . '/../..' . '/inc/PluginsScreen.php',
+        'WPDevAssist\\PluginsScreen\\ActivationManager' => __DIR__ . '/../..' . '/inc/PluginsScreen/ActivationManager.php',
+        'WPDevAssist\\PluginsScreen\\Downloader' => __DIR__ . '/../..' . '/inc/PluginsScreen/Downloader.php',
         'WPDevAssist\\Setting' => __DIR__ . '/../..' . '/inc/Setting.php',
         'WPDevAssist\\Setting\\Control\\Checkbox' => __DIR__ . '/../..' . '/inc/Setting/Control/Checkbox.php',
         'WPDevAssist\\Setting\\Control\\Control' => __DIR__ . '/../..' . '/inc/Setting/Control/Control.php',
@@ -48,9 +50,9 @@ class ComposerStaticInit65e228ae56716cbd97f75e8350dead38
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit65e228ae56716cbd97f75e8350dead38::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit65e228ae56716cbd97f75e8350dead38::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit65e228ae56716cbd97f75e8350dead38::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit231bd0012f3f7f1937f432931bd5c7c7::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit231bd0012f3f7f1937f432931bd5c7c7::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit231bd0012f3f7f1937f432931bd5c7c7::$classMap;
 
         }, null, ClassLoader::class);
     }
