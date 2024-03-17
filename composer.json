@@ -2,8 +2,8 @@
   "name": "dpripa/development-assistant",
   "version": "1.1.2",
   "type": "wordpress-plugin",
-  "description": "A collection of tools for development and support. Manage debugging and view logs directly from the admin panel, configure MailHog in one click and much more.",
-  "homepage": "https://github.com/dpripa/development-assistant-public",
+  "description": "A professional toolkit for development and customer support of plugins and themes.",
+  "homepage": "https://devassistant.dpripa.com",
   "license": "GPL-2.0-or-later",
   "authors": [
     {

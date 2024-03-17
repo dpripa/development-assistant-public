@@ -93,7 +93,7 @@ class ActivationManager {
 		}
 
 		static::deactivate_plugins( $plugins );
-		Plugin\Notice::add_transient( __( 'Plugin(s) temporarily deactivated.', 'development-assistant' ), 'success' );
+		Plugin\Notice::add_transient( __( 'Plugin temporarily deactivated.', 'development-assistant' ), 'success' );
 		wp_safe_redirect( Plugin\Url::get_admin( 'plugins' ) );
 	}
 
@@ -155,7 +155,7 @@ class ActivationManager {
 		return $actions;
 	}
 
-	public function handle_bulk_deactivation( string $redirect_to, string $doaction, $plugins ): string {
+	public function handle_bulk_deactivation( string $redirect_to, string $doaction, array $plugins ): string {
 		if ( static::BULK_DEACTIVATION_KEY !== $doaction ) {
 			return $redirect_to;
 		}

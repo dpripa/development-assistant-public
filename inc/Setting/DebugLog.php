@@ -48,14 +48,15 @@ class DebugLog {
 			<?php if ( file_exists( static::LOG_FILE_PATH ) ) { ?>
 				<ul class="da-debug-log-actions">
 					<li>
-						<a href="<?php echo esc_url( $link_download_log ); ?>" download="<?php echo esc_attr( $download_log_name ); ?>">
+						<a class="button button-primary" href="<?php echo esc_url( $link_download_log ); ?>" download="<?php echo esc_attr( $download_log_name ); ?>">
 							<?php echo esc_html__( 'Download', 'development-assistant' ); ?>
 						</a>
 					</li>
 					<li>
 						<a
+							class="button button-secondary"
 							href="<?php echo esc_url( $link_delete_log ); ?>"
-							onclick="return confirm('<?php echo esc_html__( 'Are you sure?', 'development-assistant' ); ?>')"
+							onclick="return confirm('<?php echo esc_html__( 'Are you sure to delete the debug.log file? This action is irreversible.', 'development-assistant' ); ?>')"
 						>
 							<?php echo esc_html__( 'Delete file', 'development-assistant' ); ?>
 						</a>

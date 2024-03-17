@@ -289,19 +289,18 @@ class Setting {
 		<ul class="da-setting-list">
 			<li><?php echo esc_html__( 'all plugin setting and data that was added to database will be deleted', 'development-assistant' ); ?>;</li>
 			<li><?php echo esc_html__( 'all debug constants will be reset to the states specified before the plugin was activated', 'development-assistant' ); ?>;</li>
-			<li><?php echo esc_html__( 'the debug.log file will be deleted if it didn\'t exist before the plugin was activated', 'development-assistant' ); ?>;</li>
+			<li><?php echo wp_kses( __( "the <code>debug.log</code> file will be deleted if it didn't exist before the plugin was activated", 'development-assistant' ), array( 'code' => array() ) ); ?>;</li>
 			<li><?php echo esc_html__( 'all temporarily deactivated plugins will be activated', 'development-assistant' ); ?>.</li>
 		</ul>
 		<?php
 	}
 
-	protected function get_title_info_link( string $href, string $title ): string {
+	protected function get_title_info_link( string $href, string $title, string $target = '_blank' ): string {
 		return '<a
+			class="da-setting-title-info-link dashicons dashicons-info-outline"
 			href="' . esc_url( $href ) . '"
-			class="dashicons dashicons-info-outline"
-			style="margin-left: 7px; width: 18px; height: 18px; font-size: 18px; text-decoration: none;"
-			target="_blank"
 			title="' . esc_attr( $title ) . '"
+			target="' . esc_attr( $target ) . '"
 		></a>';
 	}
 

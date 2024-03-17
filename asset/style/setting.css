@@ -9,3 +9,10 @@ input:disabled + .da-setting-checkbox__description {
   padding-left: 20px;
   list-style: disc; }
 
+.da-setting-title-info-link {
+  width: 18px;
+  height: 18px;
+  margin-left: 7px;
+  font-size: 18px;
+  text-decoration: none; }
+
