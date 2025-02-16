@@ -1,6 +1,8 @@
 <?php
 namespace WPDevAssist;
 
+use Exception;
+
 defined( 'ABSPATH' ) || exit;
 
 class WPDebug {
@@ -11,65 +13,24 @@ class WPDebug {
 	protected const ORIGINAL_LOG_VALUE_DEFAULT     = 'disabled';
 	protected const ORIGINAL_DISPLAY_VALUE_KEY     = KEY . '_original_wp_debug_display_value';
 	protected const ORIGINAL_DISPLAY_VALUE_DEFAULT = 'disabled';
+	protected const HTACCESS_MARKER                = KEY . '_debug_log';
 
+	/**
+	 * @throws Exception
+	 */
 	public function __construct() {
 		if ( ! is_admin() ) {
 			return;
 		}
 
-		$this->render_notice();
 		$this->toggle_debug_mode();
+
+		add_action( 'update_option_' . Setting::DISABLE_DIRECT_ACCESS_TO_LOG_KEY, array( $this, 'replace_htaccess_directives' ), 10, 2 );
 	}
 
-	protected function render_notice(): void {
-		$debug_enabled   = get_option( Setting::ENABLE_WP_DEBUG_KEY, Setting::ENABLE_WP_DEBUG_DEFAULT );
-		$log_enabled     = get_option( Setting::ENABLE_WP_DEBUG_LOG_KEY, Setting::ENABLE_WP_DEBUG_LOG_DEFAULT );
-		$display_enabled = get_option( Setting::ENABLE_WP_DEBUG_DISPLAY_KEY, Setting::ENABLE_WP_DEBUG_DISPLAY_DEFAULT );
-		$is_dev_env      = Plugin\Env::is_dev();
-		$condition_value = $is_dev_env ? 'yes' : 'no';
-		$const_names     = '';
-
-		if ( $debug_enabled !== $condition_value ) {
-			$const_names .= '<code>WP_DEBUG</code>';
-		}
-
-		if ( $log_enabled !== $condition_value ) {
-			$const_names .= ( $const_names ? ', ' : '' ) . '<code>WP_DEBUG_LOG</code>';
-		}
-
-		if ( $display_enabled !== $condition_value ) {
-			$const_names .= ( $const_names ? ', ' : '' ) . '<code>WP_DEBUG_DISPLAY</code>';
-		}
-
-		if ( empty( $const_names ) ) {
-			return;
-		}
-
-		if ( $is_dev_env ) {
-			$message = sprintf(
-				__( 'Disabled %1$s was detected in the development environment. %2$s', 'development-assistant' ),
-				$const_names,
-				'<br><b>' .
-				__( 'Don\'t forget to enable this when you start developing.', 'development-assistant' ) .
-				'</b>'
-			);
-		} else {
-			$message = sprintf(
-				__( 'Enabled %1$s was detected in the production environment. %2$s', 'development-assistant' ),
-				$const_names,
-				'<br><b>' .
-				__( 'Don\'t leave it enabled unless you are debugging to avoid the performance and security issues.', 'development-assistant' ) .
-				'</b>'
-			);
-		}
-
-		$message .= '<br><a href="' . Setting::get_page_url() . '">';
-		$message .= __( 'Go to manage', 'development-assistant' );
-		$message .= '</a>';
-
-		StatusNotice::render( $message );
-	}
-
+	/**
+	 * @throws Exception
+	 */
 	protected function toggle_debug_mode(): void {
 		$is_debug_setting_enabled   = 'yes' === get_option( Setting::ENABLE_WP_DEBUG_KEY, Setting::ENABLE_WP_DEBUG_DEFAULT );
 		$is_log_setting_enabled     = 'yes' === get_option( Setting::ENABLE_WP_DEBUG_LOG_KEY, Setting::ENABLE_WP_DEBUG_DISPLAY_KEY );
@@ -86,13 +47,15 @@ class WPDebug {
 		$config_content = static::read_config_content();
 
 		if ( empty( $config_content ) ) {
-			Plugin\Notice::add_transient(
+			Notice::add_transient(
 				sprintf(
 					__( 'Can\'t read the %s.', 'development-assistant' ),
 					static::CONFIG_FILE_PATH
 				),
 				'error'
 			);
+
+			return;
 		}
 
 		if ( static::is_debug_enabled() !== $is_debug_setting_enabled ) {
@@ -119,42 +82,22 @@ class WPDebug {
 			);
 		}
 
-		if ( empty( static::write_config_content( $config_content ) ) ) {
-			Plugin\Notice::add_transient(
-				sprintf(
-					__( 'Can\'t write the %s.', 'development-assistant' ),
-					static::CONFIG_FILE_PATH
-				),
-				'error'
-			);
-		}
+		static::write_config_content( $config_content );
 	}
 
-	protected static function read_config_content(): string {
-		if ( file_exists( static::CONFIG_FILE_PATH ) ) {
-			$file     = fopen( static::CONFIG_FILE_PATH, 'r' ); // phpcs:ignore
-			$response = '';
-
-			fseek( $file, -1048576, SEEK_END );
-
-			while ( ! feof( $file ) ) {
-				$response .= fgets( $file );
-			}
-
-			fclose( $file ); // phpcs:ignore
-
-			return $response;
-		}
-
-		return '';
-	}
-
+	/**
+	 * @throws Exception
+	 */
 	protected static function update_config_const( string $name, string $value, string $config_content ): string {
 		$search = array(
 			"define( '" . $name . "', true );",
 			"define( '" . $name . "', false );",
 			"define('" . $name . "', true);",
 			"define('" . $name . "', false);",
+			'const ' . $name . ' = true;',
+			'const ' . $name . ' = false;',
+			'const ' . $name . '=true;',
+			'const ' . $name . '=false;',
 		);
 
 		switch ( $value ) {
@@ -175,7 +118,7 @@ class WPDebug {
 
 				return str_replace(
 					'$table_prefix',
-					"define('" . $name . "', true);" . "\r\n" . '$table_prefix', // phpcs:ignore
+					"define( '" . $name . "', true );" . "\r\n" . '$table_prefix', // phpcs:ignore
 					$config_content
 				);
 
@@ -187,20 +130,19 @@ class WPDebug {
 				);
 
 			default:
-				throw new \Exception( "\"$value\" is not a allowed value" );
+				throw new Exception( "\"$value\" is not an allowed value" );
 		}
 	}
 
-	protected static function write_config_content( string $content ): string {
-		$output = error_log( '/*test*/', '3', static::CONFIG_FILE_PATH ); // phpcs:ignore
+	/**
+	 * @return string|bool
+	 */
+	protected static function read_config_content() {
+		return Fs::read( static::CONFIG_FILE_PATH );
+	}
 
-		if ( $output ) {
-			unlink( static::CONFIG_FILE_PATH );
-			error_log( $content, '3', static::CONFIG_FILE_PATH ); // phpcs:ignore
-			chmod( static::CONFIG_FILE_PATH, 0600 );
-		}
-
-		return $output;
+	protected static function write_config_content( string $content ): bool {
+		return Fs::write( static::CONFIG_FILE_PATH, $content );
 	}
 
 	public static function is_debug_enabled(): bool {
@@ -230,17 +172,22 @@ class WPDebug {
 		);
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	public static function reset_config_const(): void {
 		$config_content = static::read_config_content();
 
 		if ( empty( $config_content ) ) {
-			Plugin\Notice::add_transient(
+			Notice::add_transient(
 				sprintf(
 					__( 'Can\'t read the %s.', 'development-assistant' ),
 					static::CONFIG_FILE_PATH
 				),
 				'error'
 			);
+
+			return;
 		}
 
 		$config_content = static::update_config_const(
@@ -259,20 +206,51 @@ class WPDebug {
 			$config_content
 		);
 
-		if ( empty( static::write_config_content( $config_content ) ) ) {
-			Plugin\Notice::add_transient(
-				sprintf(
-					__( 'Can\'t write the %s.', 'development-assistant' ),
-					static::CONFIG_FILE_PATH
-				),
-				'error'
-			);
-
+		if ( ! static::write_config_content( $config_content ) ) {
 			return;
 		}
 
 		delete_option( static::ORIGINAL_DEBUG_VALUE_KEY );
 		delete_option( static::ORIGINAL_LOG_VALUE_KEY );
 		delete_option( static::ORIGINAL_DISPLAY_VALUE_KEY );
+	}
+
+	public function replace_htaccess_directives( string $old_value, string $value ): void {
+		if ( 'yes' === $value ) {
+			if ( ! static::add_htaccess_directives() ) {
+				Notice::add_transient(
+					__( 'Can\'t add the directives to the .htaccess file', 'development-assistant' ),
+					'error'
+				);
+			}
+
+			return;
+		}
+
+		if ( ! static::remove_htaccess_directives() ) {
+			Notice::add_transient(
+				__( 'Can\'t remove the directives from the .htaccess file', 'development-assistant' ),
+				'error'
+			);
+		}
+	}
+
+	public static function add_htaccess_directives(): bool {
+		return Htaccess::replace(
+			static::HTACCESS_MARKER,
+			'<If "%{REQUEST_URI} =~ m#^/wp-content/debug.log#">
+			    <IfModule mod_authz_core.c>
+					Require all denied
+				</IfModule>
+				<IfModule !mod_authz_core.c>
+					Order deny,allow
+					Deny from all
+				</IfModule>
+			</If>'
+		);
+	}
+
+	public static function remove_htaccess_directives(): bool {
+		return Htaccess::remove( static::HTACCESS_MARKER );
 	}
 }

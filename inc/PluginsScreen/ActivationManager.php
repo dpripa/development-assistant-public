@@ -1,9 +1,10 @@
 <?php
 namespace WPDevAssist\PluginsScreen;
 
-use WPDevAssist\Plugin;
+use WPDevAssist\ActionQuery;
+use WPDevAssist\Notice;
 use const WPDevAssist\KEY;
-use const WPDevAssist\NAME;
+use const WPDevAssist\ROOT_FILE;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -16,31 +17,23 @@ class ActivationManager {
 	public const DEACTIVATED_KEY              = KEY . '_temporarily_deactivated_plugins';
 
 	public function __construct() {
-		add_action( 'admin_init', array( $this, 'handle_deactivation' ) );
-		add_action( 'admin_init', array( $this, 'handle_activation' ) );
+		ActionQuery::add( static::DEACTIVATION_QUERY_KEY, array( $this, 'handle_deactivation' ) );
+		ActionQuery::add( static::ACTIVATION_QUERY_KEY, array( $this, 'handle_activation' ), false );
 		add_action( 'activate_plugin', array( $this, 'remove_temporarily_deactivated' ) );
 		add_filter( 'bulk_actions-plugins', array( $this, 'add_bulk_deactivation' ) );
 		add_filter( 'handle_bulk_actions-plugins', array( $this, 'handle_bulk_deactivation' ), 10, 3 );
 	}
 
 	public static function get_deactivation_url( array $plugins ): string {
-		return wp_nonce_url(
-			add_query_arg(
-				array( static::DEACTIVATION_QUERY_KEY => implode( ',', $plugins ) ),
-				Plugin\Url::get_admin( 'plugins' )
-			),
-			static::DEACTIVATION_QUERY_KEY
+		return ActionQuery::get_url(
+			static::DEACTIVATION_QUERY_KEY,
+			get_admin_url( null, 'plugins.php' ),
+			implode( ',', $plugins )
 		);
 	}
 
 	public static function get_activation_url(): string {
-		return wp_nonce_url(
-			add_query_arg(
-				array( static::ACTIVATION_QUERY_KEY => 'yes' ),
-				Plugin\Url::get_admin( 'plugins' )
-			),
-			static::ACTIVATION_QUERY_KEY
-		);
+		return ActionQuery::get_url( static::ACTIVATION_QUERY_KEY, get_admin_url( null, 'plugins.php' ) );
 	}
 
 	public static function is_temporarily_deactivated( string $plugin_file ): bool {
@@ -52,7 +45,7 @@ class ActivationManager {
 
 		foreach ( $plugins as $plugin_key => $plugin ) {
 			if (
-				NAME . '/' . NAME . '.php' !== $plugin &&
+				plugin_basename( ROOT_FILE ) !== $plugin &&
 				is_plugin_active( $plugin )
 			) {
 				continue;
@@ -68,62 +61,55 @@ class ActivationManager {
 	public static function activate_plugins(): void {
 		$plugins = get_option( static::DEACTIVATED_KEY, array() );
 
-		delete_option( static::DEACTIVATED_KEY );
-
 		if ( empty( $plugins ) ) {
+			delete_option( static::DEACTIVATED_KEY );
+
 			return;
 		}
 
-		activate_plugins( $plugins );
+		if ( ! activate_plugins( $plugins ) ) {
+			Notice::add_transient( __( 'Can\'t activate the plugin(s).', 'development-assistant' ), 'error' );
+
+		} else {
+			delete_option( static::DEACTIVATED_KEY );
+		}
 	}
 
-	public function handle_deactivation(): void {
-		if (
-			empty( $_GET['_wpnonce'] ) ||
-			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), static::DEACTIVATION_QUERY_KEY ) ||
-			empty( $_GET[ static::DEACTIVATION_QUERY_KEY ] )
-		) {
-			return;
-		}
-
-		$plugins = explode( ',', sanitize_text_field( wp_unslash( $_GET[ static::DEACTIVATION_QUERY_KEY ] ) ) );
+	public function handle_deactivation( array $data ): void {
+		$plugins = explode( ',', sanitize_text_field( wp_unslash( $data[ static::DEACTIVATION_QUERY_KEY ] ) ) );
 
 		if ( empty( $plugins ) ) {
 			return;
 		}
 
 		static::deactivate_plugins( $plugins );
-		Plugin\Notice::add_transient( __( 'Plugin temporarily deactivated.', 'development-assistant' ), 'success' );
-		wp_safe_redirect( Plugin\Url::get_admin( 'plugins' ) );
+		Notice::add_transient( __( 'Plugin temporarily deactivated.', 'development-assistant' ), 'success' );
 	}
 
-	public function handle_activation(): void {
-		if (
-			empty( $_GET['_wpnonce'] ) ||
-			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), static::ACTIVATION_QUERY_KEY ) ||
-			empty( $_GET[ static::ACTIVATION_QUERY_KEY ] ) ||
-			'yes' !== sanitize_text_field( wp_unslash( $_GET[ static::ACTIVATION_QUERY_KEY ] ) )
-		) {
-			return;
-		}
-
+	public function handle_activation( array $data ): void {
 		static::activate_plugins();
 
-		$redirect_to = Plugin\Url::get_admin( 'plugins' );
+		$redirect_to = get_admin_url( null, 'plugins.php' );
 
 		if (
-			isset( $_GET[ static::DEACTIVATION_RESET_QUERY_KEY ] ) &&
-			sanitize_text_field( wp_unslash( $_GET[ static::DEACTIVATION_RESET_QUERY_KEY ] ) )
+			isset( $data[ static::DEACTIVATION_RESET_QUERY_KEY ] ) &&
+			sanitize_text_field( wp_unslash( $data[ static::DEACTIVATION_RESET_QUERY_KEY ] ) )
 		) {
-			deactivate_plugins( array( NAME . '/' . NAME . '.php' ) );
-
-			$redirect_to = add_query_arg( array( 'deactivate' => 'yes' ), $redirect_to );
+			$redirect_to = $this->handle_dev_assist_deactivation( $redirect_to );
 
 		} else {
-			Plugin\Notice::add_transient( __( 'Plugin(s) activated.', 'development-assistant' ), 'success' );
+			Notice::add_transient( __( 'Plugin(s) activated.', 'development-assistant' ), 'success' );
 		}
 
 		wp_safe_redirect( $redirect_to );
+
+		exit;
+	}
+
+	protected function handle_dev_assist_deactivation( string $redirect_to ): string {
+		deactivate_plugins( array( ROOT_FILE ) );
+
+		return add_query_arg( array( 'deactivate' => 'yes' ), $redirect_to );
 	}
 
 	public function remove_temporarily_deactivated( string $plugin_file ): void {
@@ -155,14 +141,14 @@ class ActivationManager {
 		return $actions;
 	}
 
-	public function handle_bulk_deactivation( string $redirect_to, string $doaction, array $plugins ): string {
-		if ( static::BULK_DEACTIVATION_KEY !== $doaction ) {
+	public function handle_bulk_deactivation( string $redirect_to, string $do_action, array $plugins ): string {
+		if ( static::BULK_DEACTIVATION_KEY !== $do_action ) {
 			return $redirect_to;
 		}
 
 		static::deactivate_plugins( $plugins );
-		Plugin\Notice::add_transient( __( 'Plugin(s) temporarily deactivated.', 'development-assistant' ), 'success' );
+		Notice::add_transient( __( 'Plugin(s) temporarily deactivated.', 'development-assistant' ), 'success' );
 
-		return Plugin\Url::get_admin( 'plugins' );
+		return get_admin_url( null, 'plugins.php' );
 	}
 }

@@ -81,71 +81,31 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./script/plugins-screen.js":
-/*!**********************************!*\
-  !*** ./script/plugins-screen.js ***!
-  \**********************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./script/assistant.js":
+/*!*****************************!*\
+  !*** ./script/assistant.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var _plugins_screen_activation_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./plugins-screen/activation-manager */ "./script/plugins-screen/activation-manager.js");
-
-$(document).on('ready', function () {
-  Object(_plugins_screen_activation_manager__WEBPACK_IMPORTED_MODULE_0__["default"])();
+/* WEBPACK VAR INJECTION */(function($) {$(document).on('ready', function () {
+  $('.da-assistant__header').on('click', function () {
+    $('.da-assistant').toggleClass('da-assistant_open');
+  });
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "jquery")))
 
 /***/ }),
 
-/***/ "./script/plugins-screen/activation-manager.js":
-/*!*****************************************************!*\
-  !*** ./script/plugins-screen/activation-manager.js ***!
-  \*****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return initActivationManager; });
-var hasDeactivatedPlugins = window.wp_dev_assist_plugins_screen.has_deactivated_plugins;
-var activationUrl = window.wp_dev_assist_plugins_screen.plugin_activation_url;
-var activationTitle = window.wp_dev_assist_plugins_screen.plugin_activation_title;
-var reset = window.wp_dev_assist_plugins_screen.reset;
-var resetQueryKey = window.wp_dev_assist_plugins_screen.deactivation_reset_query_key;
-var deactivationConfirmMessage = window.wp_dev_assist_plugins_screen.deactivation_confirm_message;
-function initActivationManager() {
-  if ('yes' !== hasDeactivatedPlugins) {
-    return;
-  }
-  var $btnActivate = $('<a/>');
-  $btnActivate.addClass('button').attr('href', activationUrl).text(activationTitle);
-  $('.bulkactions').after($btnActivate);
-  $('#deactivate-development-assistant').on('click', function (event) {
-    event.preventDefault();
-    if ('yes' === reset) {
-      window.location.href = activationUrl + '&' + resetQueryKey + '=yes';
-      return;
-    }
-    if (confirm(deactivationConfirmMessage)) {
-      window.location.href = $(this).attr('href');
-    }
-  });
-}
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "jquery")))
-
-/***/ }),
-
-/***/ "./style/plugins-screen.scss":
-/*!***********************************!*\
-  !*** ./style/plugins-screen.scss ***!
-  \***********************************/
+/***/ "./style/assistant.scss":
+/*!******************************!*\
+  !*** ./style/assistant.scss ***!
+  \******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -153,15 +113,15 @@ function initActivationManager() {
 
 /***/ }),
 
-/***/ 4:
-/*!********************************************************************!*\
-  !*** multi ./style/plugins-screen.scss ./script/plugins-screen.js ***!
-  \********************************************************************/
+/***/ 3:
+/*!**********************************************************!*\
+  !*** multi ./style/assistant.scss ./script/assistant.js ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./style/plugins-screen.scss */"./style/plugins-screen.scss");
-module.exports = __webpack_require__(/*! ./script/plugins-screen.js */"./script/plugins-screen.js");
+__webpack_require__(/*! ./style/assistant.scss */"./style/assistant.scss");
+module.exports = __webpack_require__(/*! ./script/assistant.js */"./script/assistant.js");
 
 
 /***/ }),

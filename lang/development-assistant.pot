@@ -2,16 +2,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: development-assistant\n"
-"POT-Creation-Date: 2024-03-06 01:37+0200\n"
+"POT-Creation-Date: 2025-01-20 04:30+0200\n"
 "PO-Revision-Date: 2021-04-25 23:55+0300\n"
 "Last-Translator: \n"
-"Language-Team: Developers\n"
+"Language-Team: Dmitry Pripa\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_n;_x\n"
@@ -23,99 +23,351 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-4: node_modules\n"
 "X-Poedit-SearchPathExcluded-5: release\n"
 
-#: inc/PluginsScreen.php:34
-msgid "Development Assistant"
+#: inc/Assistant/SupportUser.php:21 inc/Setting/SupportUser.php:57
+msgid "Support User"
 msgstr ""
 
-#: inc/PluginsScreen.php:87
-msgid "Activate temporarily deactivated plugins"
+#: inc/Assistant/SupportUser.php:27
+msgid "You are logged in as a support user."
 msgstr ""
 
-#: inc/PluginsScreen/ActivationManager.php:96
-#: inc/PluginsScreen/ActivationManager.php:164
-msgid "Plugin(s) temporarily deactivated."
+#: inc/Assistant/SupportUser.php:29
+msgid "The support user exists."
 msgstr ""
 
-#: inc/PluginsScreen/ActivationManager.php:123
-msgid "Plugin(s) activated."
+#: inc/Assistant/SupportUser.php:37
+msgid "Support user not created. You don't share administrative access with third-parties."
 msgstr ""
 
-#: inc/PluginsScreen/ActivationManager.php:153
-msgid "Temporarily deactivate"
+#: inc/Assistant/SupportUser.php:45
+msgid "Continue existence"
 msgstr ""
 
-#: inc/Setting.php:41
-msgid "DevAssistant"
+#: inc/Assistant/SupportUser.php:52
+msgid "Recreate user"
 msgstr ""
 
-#: inc/Setting.php:47
-msgid "Development Assistant Settings"
+#: inc/Assistant/SupportUser.php:57
+msgid "Delete user"
 msgstr ""
 
-#: inc/Setting.php:62
-msgid "Settings"
+#: inc/Assistant/SupportUser.php:64
+msgid "Create user in one click"
 msgstr ""
 
-#: inc/Setting.php:100
-msgid "Settings saved."
+#: inc/Assistant/SupportUser.php:79
+msgid "Will lose access soon"
 msgstr ""
 
-#: inc/Setting.php:128
-msgid "Enable <code>WP_DEBUG</code>"
+#: inc/Assistant/SupportUser.php:82 inc/Assistant/WPDebug.php:167
+#: inc/Assistant/WPDebug.php:183
+msgid "Enabled"
 msgstr ""
 
-#: inc/Setting.php:145
-msgid "Enable <code>WP_DEBUG_LOG</code>"
+#: inc/Assistant/SupportUser.php:86 inc/Assistant/WPDebug.php:164
+#: inc/Assistant/WPDebug.php:191
+msgid "Disabled"
 msgstr ""
 
-#: inc/Setting.php:162
-msgid "Enable <code>WP_DEBUG_DISPLAY</code>"
+#: inc/Assistant/WPDebug.php:36
+msgid "WP Debug"
 msgstr ""
 
-#: inc/Setting.php:225
-msgid "What it is?"
-msgstr ""
-
-#: inc/Setting.php:242
-msgid "MailHog isn't available in the production environment."
-msgstr ""
-
-#: inc/Setting/DebugLog.php:26 inc/Setting/DebugLog.php:27
-msgid "debug.log"
-msgstr ""
-
-#: inc/StatusNotice.php:12
-msgid "Tip form Development Assistant"
-msgstr ""
-
-#: inc/WPDebug.php:50
+#: inc/Assistant/WPDebug.php:50
 #, php-format
-msgid "Disabled %1$s was detected in the development environment. %2$s"
+msgid "Disabled %s was detected in the development environment."
 msgstr ""
 
-#: inc/WPDebug.php:53
+#: inc/Assistant/WPDebug.php:51
 msgid "Don't forget to enable this when you start developing."
 msgstr ""
 
-#: inc/WPDebug.php:58
+#: inc/Assistant/WPDebug.php:53
+msgid "Everything is fine, debug mode is enabled in your development environment."
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:60
 #, php-format
-msgid "Enabled %1$s was detected in the production environment. %2$s"
+msgid "Enabled %s was detected in the production environment."
 msgstr ""
 
-#: inc/WPDebug.php:61
-msgid "Don't leave it enabled unless you are debugging to avoid the performance and security issues."
+#: inc/Assistant/WPDebug.php:61
+msgid "Don't leave it enabled unless you are debugging to avoid the performance issues."
 msgstr ""
 
-#: inc/WPDebug.php:67
-msgid "Go to manage"
+#: inc/Assistant/WPDebug.php:64
+msgid "Also, for security reasons, it's highly recommended to disable direct access to the <code>debug.log</code> file."
 msgstr ""
 
-#: inc/WPDebug.php:91 inc/WPDebug.php:239
+#: inc/Assistant/WPDebug.php:66
+msgid "Direct access to the <code>debug.log</code> file is disabled."
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:70
+msgid "Warning!"
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:70
+msgid "Enabled <code>WP_DEBUG_DISPLAY</code> may cause the entire interface blocking due to the display of error messages, as well as a critical security issues. <b>Highly recommended to disable it in production environment.</b>"
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:73
+msgid "Everything is fine, debug mode is disabled, error information isn't displayed or logged."
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:77
+msgid "The <code>debug.log</code> file still exists, but it is protected from direct access, so don't worry."
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:80
+msgid "But <code>debug.log</code> file still exists, it's important to delete it or disable direct access."
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:82
+msgid "But <code>debug.log</code> file still exists, it's important to delete it."
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:109 inc/Setting.php:156
+msgid "Go to <code>debug.log</code>"
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:116
+msgid "Disable <code>WP_DEBUG_DISPLAY</code>"
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:126
+msgid "Disable debug mode"
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:128
+msgid "Are you sure to disable debug mode?"
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:132
+msgid "Enable debug mode"
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:134
+msgid "Are you sure to enable debug mode?"
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:143
+msgid "Disable direct access to <code>debug.log</code>"
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:153
+msgid "Delete log file"
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:176
+msgid "Enabled with direct access to logs"
+msgstr ""
+
+#: inc/Assistant/WPDebug.php:188
+msgid "Disabled, but logs exists"
+msgstr ""
+
+#: inc/Fs.php:34
+#, php-format
+msgid "Can't write the %s."
+msgstr ""
+
+#: inc/Fs.php:51 inc/WPDebug.php:52 inc/WPDebug.php:184
 #, php-format
 msgid "Can't read the %s."
 msgstr ""
 
-#: inc/WPDebug.php:125 inc/WPDebug.php:265
+#: inc/PluginsScreen.php:40
+msgid "Development Assistant"
+msgstr ""
+
+#: inc/PluginsScreen.php:91
+msgid "Activate temporarily deactivated plugins"
+msgstr ""
+
+#: inc/PluginsScreen/ActivationManager.php:71
+msgid "Can't activate the plugin(s)."
+msgstr ""
+
+#: inc/PluginsScreen/ActivationManager.php:86
+msgid "Plugin temporarily deactivated."
+msgstr ""
+
+#: inc/PluginsScreen/ActivationManager.php:101
+msgid "Plugin(s) activated."
+msgstr ""
+
+#: inc/PluginsScreen/ActivationManager.php:139
+msgid "Temporarily deactivate"
+msgstr ""
+
+#: inc/PluginsScreen/ActivationManager.php:150
+msgid "Plugin(s) temporarily deactivated."
+msgstr ""
+
+#: inc/PluginsScreen/Downloader.php:35
+msgid "Failed to download plugin"
+msgstr ""
+
+#: inc/Setting.php:59
+msgid "Development Assistant Settings"
+msgstr ""
+
+#: inc/Setting.php:74
+msgid "Settings"
+msgstr ""
+
+#: inc/Setting.php:98
+msgid "Enable <code>WP_DEBUG</code>"
+msgstr ""
+
+#: inc/Setting.php:105
+msgid "Enable <code>WP_DEBUG_LOG</code>"
+msgstr ""
+
+#: inc/Setting.php:113
+msgid "Enabling error display may cause the entire interface blocking due to the display of these error messages, as well as a critical security issues. <b>Highly recommended to keep it disabled in production environment.</b>"
+msgstr ""
+
+#: inc/Setting.php:119
+msgid "Enable <code>WP_DEBUG_DISPLAY</code>"
+msgstr ""
+
+#: inc/Setting.php:127
 #, php-format
-msgid "Can't write the %s."
+msgid "Public access via %s to the <code>debug.log</code> file will be disabled."
+msgstr ""
+
+#: inc/Setting.php:134
+msgid "<code>.htaccess</code> file is required (only supported on Apache HTTP Server)."
+msgstr ""
+
+#: inc/Setting.php:140
+msgid "Disable direct access"
+msgstr ""
+
+#: inc/Setting.php:151
+msgid "These options allow you to safely control the debug constants without the need to manually edit the <code>wp-config.php</code>."
+msgstr ""
+
+#: inc/Setting.php:202
+msgid "What it is?"
+msgstr ""
+
+#: inc/Setting.php:214
+msgid "MailHog isn't available in the production environment."
+msgstr ""
+
+#: inc/Setting.php:291
+msgid "Debug mode enabled."
+msgstr ""
+
+#: inc/Setting.php:293
+msgid "Debug mode disabled."
+msgstr ""
+
+#: inc/Setting.php:305
+msgid "Direct access to the <code>debug.log</code> file disabled."
+msgstr ""
+
+#: inc/Setting.php:310
+msgid "<code>WP_DEBUG_DISPLAY</code> disabled."
+msgstr ""
+
+#: inc/Setting.php:316
+msgid "<code>WP_DEBUG_LOG</code> enabled."
+msgstr ""
+
+#: inc/Setting/DebugLog.php:32
+msgid "debug.log"
+msgstr ""
+
+#: inc/Setting/DebugLog.php:143
+msgid "Are you sure to delete the debug.log file? This action is irreversible."
+msgstr ""
+
+#: inc/Setting/DebugLog.php:213
+msgid "Logging is disabled."
+msgstr ""
+
+#: inc/Setting/DebugLog.php:215
+msgid "Enable"
+msgstr ""
+
+#: inc/Setting/Page.php:23
+msgid "DevAssistant"
+msgstr ""
+
+#: inc/Setting/Page.php:62
+msgid "Settings saved."
+msgstr ""
+
+#: inc/Setting/SupportUser.php:81
+msgid "This section allows you to quickly create a user with administrator role that can be used by the support team to access the website for debugging purposes."
+msgstr ""
+
+#: inc/Setting/SupportUser.php:89
+msgid "Enable support user"
+msgstr ""
+
+#: inc/Setting/SupportUser.php:96
+msgid "Delete user after days"
+msgstr ""
+
+#: inc/Setting/SupportUser.php:103
+msgid "Set to 0 to disable automatic deletion."
+msgstr ""
+
+#: inc/Setting/SupportUser.php:115
+msgid "User Credentials"
+msgstr ""
+
+#: inc/Setting/SupportUser.php:263
+msgid "Are you sure to recreate the support user? This will cause loss of access for those providing support, you will need to reshare this to keep their access."
+msgstr ""
+
+#: inc/Setting/SupportUser.php:267
+msgid "Are you sure to delete the support user? This will cause loss of access for those providing support."
+msgstr ""
+
+#: inc/Setting/SupportUser.php:308
+msgid "Support user created."
+msgstr ""
+
+#: inc/Setting/SupportUser.php:313
+msgid "Support user deleted."
+msgstr ""
+
+#: inc/Setting/SupportUser.php:319
+msgid "Support user recreated."
+msgstr ""
+
+#: inc/Setting/SupportUser.php:328
+msgid "Invalid email. Please recreate the user and try sharing again."
+msgstr ""
+
+#: inc/Setting/SupportUser.php:335 inc/Setting/SupportUser.php:354
+msgid "An error occurred while trying to send the email."
+msgstr ""
+
+#: inc/Setting/SupportUser.php:342
+#, php-format
+msgid "Support access to %s"
+msgstr ""
+
+#: inc/Setting/SupportUser.php:369
+#, php-format
+msgid "Credentials successfully shared this %s."
+msgstr ""
+
+#: inc/Setting/SupportUser.php:439
+msgid "Support user existence extended."
+msgstr ""
+
+#: inc/WPDebug.php:222
+msgid "Can't add the directives to the .htaccess file"
+msgstr ""
+
+#: inc/WPDebug.php:232
+msgid "Can't remove the directives from the .htaccess file"
 msgstr ""

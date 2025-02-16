@@ -81,71 +81,70 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./script/plugins-screen.js":
-/*!**********************************!*\
-  !*** ./script/plugins-screen.js ***!
-  \**********************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./script/support-user.js":
+/*!********************************!*\
+  !*** ./script/support-user.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var _plugins_screen_activation_manager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./plugins-screen/activation-manager */ "./script/plugins-screen/activation-manager.js");
-
+/* WEBPACK VAR INJECTION */(function($) {var pageUrl = window.wp_dev_assist_support_user.page_url;
+var shareNonce = window.wp_dev_assist_support_user.share_nonce;
+var shareQueryKeys = window.wp_dev_assist_support_user.share_query_keys;
 $(document).on('ready', function () {
-  Object(_plugins_screen_activation_manager__WEBPACK_IMPORTED_MODULE_0__["default"])();
+  initCopy();
+  initShare();
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "jquery")))
-
-/***/ }),
-
-/***/ "./script/plugins-screen/activation-manager.js":
-/*!*****************************************************!*\
-  !*** ./script/plugins-screen/activation-manager.js ***!
-  \*****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return initActivationManager; });
-var hasDeactivatedPlugins = window.wp_dev_assist_plugins_screen.has_deactivated_plugins;
-var activationUrl = window.wp_dev_assist_plugins_screen.plugin_activation_url;
-var activationTitle = window.wp_dev_assist_plugins_screen.plugin_activation_title;
-var reset = window.wp_dev_assist_plugins_screen.reset;
-var resetQueryKey = window.wp_dev_assist_plugins_screen.deactivation_reset_query_key;
-var deactivationConfirmMessage = window.wp_dev_assist_plugins_screen.deactivation_confirm_message;
-function initActivationManager() {
-  if ('yes' !== hasDeactivatedPlugins) {
-    return;
-  }
-  var $btnActivate = $('<a/>');
-  $btnActivate.addClass('button').attr('href', activationUrl).text(activationTitle);
-  $('.bulkactions').after($btnActivate);
-  $('#deactivate-development-assistant').on('click', function (event) {
-    event.preventDefault();
-    if ('yes' === reset) {
-      window.location.href = activationUrl + '&' + resetQueryKey + '=yes';
+function initCopy() {
+  var copiedTextTimeout;
+  $('#da-copy-support-user-credentials').on('click', function () {
+    var $this = $(this);
+    var credentialsText = $('#da-support-user-credentials li').map(function () {
+      return $(this).text().trimStart().trimEnd();
+    }).get().join('\n');
+    var $tempInput = $('<textarea>');
+    $tempInput.appendTo('body').addClass('da-support-user__hidden-element').val(credentialsText).select();
+    document.execCommand('copy');
+    $tempInput.remove();
+    $this.addClass('da-support-user__copy_copied');
+    clearTimeout(copiedTextTimeout);
+    copiedTextTimeout = setTimeout(function () {
+      $this.removeClass('da-support-user__copy_copied');
+    }, 2500);
+  });
+}
+function initShare() {
+  $('#da-share-support-user').on('click', function () {
+    var $email = $('#da-share-support-user-email');
+    var email = $email.val();
+    var password = $('#da-support-user-password').text().trim();
+    if ('' === email || !$email[0].reportValidity() || '' === password) {
       return;
     }
-    if (confirm(deactivationConfirmMessage)) {
-      window.location.href = $(this).attr('href');
-    }
+    var message = $('#da-share-support-user-message').val();
+    var $tempForm = $('<form>');
+    var $tempPasswordInput = $('<input>');
+    var $tempMessageInput = $('<textarea>');
+    var actionUrl = pageUrl + '&' + shareQueryKeys.email + '=' + email + '&' + '_wpnonce=' + shareNonce;
+    $tempForm.appendTo('body').addClass('da-support-user__hidden-element').attr('method', 'post').attr('action', actionUrl).append($tempPasswordInput).append($tempMessageInput);
+    $tempPasswordInput.attr('name', shareQueryKeys.password).val(password);
+    $tempMessageInput.attr('name', shareQueryKeys.message).val(message);
+    $tempForm.submit();
   });
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "jquery")))
 
 /***/ }),
 
-/***/ "./style/plugins-screen.scss":
-/*!***********************************!*\
-  !*** ./style/plugins-screen.scss ***!
-  \***********************************/
+/***/ "./style/support-user.scss":
+/*!*********************************!*\
+  !*** ./style/support-user.scss ***!
+  \*********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -153,15 +152,15 @@ function initActivationManager() {
 
 /***/ }),
 
-/***/ 4:
-/*!********************************************************************!*\
-  !*** multi ./style/plugins-screen.scss ./script/plugins-screen.js ***!
-  \********************************************************************/
+/***/ 2:
+/*!****************************************************************!*\
+  !*** multi ./style/support-user.scss ./script/support-user.js ***!
+  \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./style/plugins-screen.scss */"./style/plugins-screen.scss");
-module.exports = __webpack_require__(/*! ./script/plugins-screen.js */"./script/plugins-screen.js");
+__webpack_require__(/*! ./style/support-user.scss */"./style/support-user.scss");
+module.exports = __webpack_require__(/*! ./script/support-user.js */"./script/support-user.js");
 
 
 /***/ }),
