@@ -3,7 +3,7 @@
  * Plugin Name: Development Assistant
  * Plugin URI: https://devassistant.dpripa.com
  * Description: Toolkit for debugging and customer support.
- * Version: 1.2.3
+ * Version: 1.2.4
  * Text Domain: development-assistant
  * Author: Dmitry Pripa
  * Author URI: https://dpripa.com
