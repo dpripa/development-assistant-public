@@ -45,6 +45,7 @@ class MailHog extends Section {
 				$this->controls[] = new Control(
 					__( 'Send a test email', 'development-assistant' ),
 					ActionQuery::get_url( \WPDevAssist\MailHog::SEND_TEST_EMAIL_QUERY_KEY ),
+					__( 'Confirm sending test email?', 'development-assistant' )
 				);
 			} else {
 				$this->controls[] = new Control(

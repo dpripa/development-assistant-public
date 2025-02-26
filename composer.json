@@ -1,6 +1,6 @@
 {
   "name": "dpripa/development-assistant",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "type": "wordpress-plugin",
   "description": "Toolkit for debugging and customer support.",
   "homepage": "https://devassistant.dpripa.com",
@@ -25,7 +25,8 @@
     }
   },
   "require": {
-    "php": ">=7.4.0"
+    "php": ">=7.4.0",
+    "ext-zip": "*"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.3.1",

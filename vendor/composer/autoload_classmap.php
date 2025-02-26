@@ -20,6 +20,7 @@ return array(
     'WPDevAssist\\Fs' => $baseDir . '/inc/Fs.php',
     'WPDevAssist\\Htaccess' => $baseDir . '/inc/Htaccess.php',
     'WPDevAssist\\MailHog' => $baseDir . '/inc/MailHog.php',
+    'WPDevAssist\\Model\\Link' => $baseDir . '/inc/Model/Link.php',
     'WPDevAssist\\Notice' => $baseDir . '/inc/Notice.php',
     'WPDevAssist\\PluginsScreen' => $baseDir . '/inc/PluginsScreen.php',
     'WPDevAssist\\PluginsScreen\\ActivationManager' => $baseDir . '/inc/PluginsScreen/ActivationManager.php',

@@ -5,6 +5,7 @@ use Exception;
 use WPDevAssist\ActionQuery;
 use WPDevAssist\Asset;
 use WPDevAssist\Fs;
+use WPDevAssist\Model\Link;
 use WPDevAssist\Notice;
 use WPDevAssist\Setting;
 use const WPDevAssist\KEY;
@@ -14,7 +15,8 @@ defined( 'ABSPATH' ) || exit;
 class DebugLog extends Page {
 	public const KEY = KEY . '_debug_log';
 
-	protected const LOG_FILE_PATH              = WP_CONTENT_DIR . '/debug.log';
+	protected const LOG_FILE_PATH = WP_CONTENT_DIR . '/debug.log';
+
 	protected const ORIGINAL_EXISTENCE_KEY     = KEY . '_original_debug_log_existence';
 	protected const ORIGINAL_EXISTENCE_DEFAULT = 'yes';
 
@@ -93,15 +95,15 @@ class DebugLog extends Page {
 					</a>
 				</li>
 				<li>
-					<a
-						class="button button-secondary <?php echo $file_exists ? '' : 'button-disabled'; ?>"
-						<?php
-						echo $file_exists ? 'href="' . esc_url( $link_delete_log ) . '"' : '';
-						echo $file_exists ? ' onclick="return confirm(\'' . esc_js( static::get_deletion_confirmation_massage() ) . '\')"' : '';
-						?>
-					>
-						<?php echo esc_html__( 'Delete file', 'development-assistant' ); ?>
-					</a>
+					<?php
+					( new Link(
+						__( 'Delete file', 'development-assistant' ),
+						$link_delete_log,
+						static::get_deletion_confirmation_massage(),
+						false,
+						'button button-secondary' . $file_exists ? '' : ' button-disabled'
+					) )->render();
+					?>
 				</li>
 				<?php
 				if ( static::is_file_exists() ) {

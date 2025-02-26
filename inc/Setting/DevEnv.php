@@ -13,15 +13,14 @@ class DevEnv extends Tab {
 	public const PAGE_KEY = Setting::KEY;
 	public const KEY      = self::PAGE_KEY . '_dev_env';
 
-	public const ENABLE_KEY                     = KEY . '_force_dev_env';
-	public const ENABLE_DEFAULT                 = 'no';
-	public const REDIRECT_TO_MAIL_HOG_KEY       = KEY . '_redirect_to_mail_hog';
-	public const REDIRECT_TO_MAIL_HOG_DEFAULT   = 'no';
-	public const MAIL_HOG_HTTP_HOST_KEY         = KEY . '_mail_hog_http_address';
-	public const MAIL_HOG_HTTP_HOST_DEFAULT     = '127.0.0.1:8025/mailhog';
-	public const MAIL_HOG_SMTP_HOST_KEY         = KEY . '_mail_hog_smtp_address';
-	public const MAIL_HOG_SMTP_HOST_DEFAULT     = '127.0.0.1:1025';
-	public const REDIRECT_TO_MAIL_HOG_QUERY_KEY = KEY . '_redirect_to_mail_hog';
+	public const ENABLE_KEY                   = KEY . '_force_dev_env';
+	public const ENABLE_DEFAULT               = 'no';
+	public const REDIRECT_TO_MAIL_HOG_KEY     = KEY . '_redirect_to_mail_hog';
+	public const REDIRECT_TO_MAIL_HOG_DEFAULT = 'no';
+	public const MAIL_HOG_HTTP_HOST_KEY       = KEY . '_mail_hog_http_address';
+	public const MAIL_HOG_HTTP_HOST_DEFAULT   = '127.0.0.1:8025/mailhog';
+	public const MAIL_HOG_SMTP_HOST_KEY       = KEY . '_mail_hog_smtp_address';
+	public const MAIL_HOG_SMTP_HOST_DEFAULT   = '127.0.0.1:1025';
 
 	protected const SETTING_KEYS = array(
 		self::ENABLE_KEY,
@@ -30,7 +29,9 @@ class DevEnv extends Tab {
 		self::MAIL_HOG_SMTP_HOST_KEY,
 	);
 
-	protected static array $dev_hosts = array(
+	public const REDIRECT_TO_MAIL_HOG_QUERY_KEY = KEY . '_redirect_to_mail_hog';
+
+	protected const DEV_HOSTS = array(
 		'localhost',
 		'local',
 		'loc',
@@ -39,7 +40,7 @@ class DevEnv extends Tab {
 		'mamp',
 	);
 
-	protected static array $dev_envs = array(
+	protected const DEV_ENVS = array(
 		'development',
 		'local',
 	);
@@ -162,7 +163,7 @@ class DevEnv extends Tab {
 	}
 
 	public static function add_default_options(): void {
-		if ( static::is_detected_dev_env() ) {
+		if ( static::is_detected_dev_env() && ! in_array( get_option( static::ENABLE_KEY ), array( 'yes', 'no' ), true ) ) {
 			update_option( static::ENABLE_KEY, 'yes' );
 		}
 	}
@@ -171,9 +172,9 @@ class DevEnv extends Tab {
 		$host      = explode( '.', wp_parse_url( home_url(), PHP_URL_HOST ) );
 		$root_host = end( $host );
 
-		return in_array( $root_host, static::$dev_hosts, true ) ||
-			in_array( wp_get_environment_type(), static::$dev_envs, true ) ||
-			( defined( 'WP_ENVIRONMENT' ) && in_array( WP_ENVIRONMENT, static::$dev_envs, true ) );
+		return in_array( $root_host, static::DEV_HOSTS, true ) ||
+			in_array( wp_get_environment_type(), static::DEV_ENVS, true ) ||
+			( defined( 'WP_ENVIRONMENT' ) && in_array( WP_ENVIRONMENT, static::DEV_ENVS, true ) );
 	}
 
 	public function handle_redirect_to_mail_hog(): void {

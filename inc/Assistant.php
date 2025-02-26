@@ -6,6 +6,8 @@ use Exception;
 defined( 'ABSPATH' ) || exit;
 
 class Assistant {
+	public const TITLE_HOOK = KEY . '_assistant_panel_title';
+
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'init' ), 1 );
 	}
@@ -22,7 +24,10 @@ class Assistant {
 			$sections[] = new Assistant\MailHog();
 		}
 
-		if ( 'yes' === get_option( Setting\SupportUser::ENABLE_KEY, Setting\SupportUser::ENABLE_DEFAULT ) ) {
+		if (
+			apply_filters( Setting\SupportUser::ENABLE_HOOK, true ) &&
+			'yes' === get_option( Setting\SupportUser::ENABLE_KEY, Setting\SupportUser::ENABLE_DEFAULT )
+		) {
 			$sections[] = new Assistant\SupportUser();
 		}
 
@@ -61,7 +66,16 @@ class Assistant {
 			<button class="da-assistant__header" type="button">
 				<span class="da-assistant__header-content">
 					<span class="da-assistant__icon dashicons dashicons-pets"></span>
-					<span class="da-assistant__title"><?php echo esc_html__( 'Assistant Panel', 'development-assistant' ); ?></span>
+					<span class="da-assistant__title">
+						<?php
+						echo esc_html(
+							apply_filters(
+								static::TITLE_HOOK,
+								__( 'Assistant Panel', 'development-assistant' )
+							)
+						);
+						?>
+					</span>
 					<span class="da-assistant__statuses">
 						<?php
 						foreach ( $sections as $section ) {

@@ -14,7 +14,13 @@ class Asset {
 	/**
 	 * @throws Exception
 	 */
-	public static function enqueue_script( string $name, array $deps = array(), array $args = array(), bool $in_footer = true, ?string $args_object_name = null ): void {
+	public static function enqueue_script(
+		string $name,
+		array $deps = array(),
+		array $args = array(),
+		bool $in_footer = true,
+		?string $args_object_name = null
+	): void {
 		$key      = static::get_key( $name );
 		$filename = $name . static::POSTFIX . '.js';
 		$rel      = static::ASSET_DIR . '/' . static::SCRIPT_DIR . '/' . $filename;
@@ -37,9 +43,10 @@ class Asset {
 	}
 
 	/**
+	 * @param string|array|null $addition
 	 * @throws Exception
 	 */
-	public static function enqueue_style( string $name, array $deps = array(), /* ?string|?array */ $addition = null ): void { // phpcs:ignore
+	public static function enqueue_style( string $name, array $deps = array(), $addition = null ): void {
 		$key      = static::get_key( $name );
 		$filename = $name . static::POSTFIX . '.css';
 		$rel      = static::ASSET_DIR . '/' . static::STYLE_DIR . '/' . $filename;

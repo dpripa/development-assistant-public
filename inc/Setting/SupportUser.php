@@ -5,28 +5,34 @@ use Exception;
 use WP_Error;
 use WPDevAssist\ActionQuery;
 use WPDevAssist\Asset;
-use WPDevAssist\Setting;
+use WPDevAssist\Model\Link;
 use WPDevAssist\Notice;
 use const WPDevAssist\KEY;
 
 class SupportUser extends Page {
 	public const KEY = KEY . '_support_user';
 
-	public const ENABLE_KEY                 = KEY . '_enable_support_user';
-	public const ENABLE_DEFAULT             = 'yes';
-	public const DELETE_AFTER_DAYS_KEY      = KEY . '_delete_support_user_after_days';
-	public const DELETE_AFTER_DAYS_DEFAULT  = 3;
-	public const ID_KEY                     = KEY . '_support_user_id';
-	public const ID_DEFAULT                 = 0;
-	public const LOGIN_KEY                  = KEY . '_support_user_login';
-	public const LOGIN_DEFAULT              = '';
-	public const PASSWORD_KEY               = KEY . '_support_user_password';
-	public const PASSWORD_DEFAULT           = '';
-	public const PASSWORD_SHOWN_VALUE       = '************';
-	public const CREATED_AT_KEY             = KEY . '_support_user_created_at';
-	public const CREATED_AT_DEFAULT         = 0;
-	public const EMAIL_KEY                  = KEY . '_support_user_email';
-	public const EMAIL_DEFAULT              = '';
+	public const ENABLE_KEY                = KEY . '_enable_support_user';
+	public const ENABLE_DEFAULT            = 'yes';
+	public const DELETE_AFTER_DAYS_KEY     = KEY . '_delete_support_user_after_days';
+	public const DELETE_AFTER_DAYS_DEFAULT = 3;
+	public const ID_KEY                    = KEY . '_support_user_id';
+	public const ID_DEFAULT                = 0;
+	public const LOGIN_KEY                 = KEY . '_support_user_login';
+	public const LOGIN_DEFAULT             = '';
+	public const PASSWORD_KEY              = KEY . '_support_user_password';
+	public const PASSWORD_DEFAULT          = '';
+	public const PASSWORD_SHOWN_VALUE      = '************';
+	public const CREATED_AT_KEY            = KEY . '_support_user_created_at';
+	public const CREATED_AT_DEFAULT        = 0;
+	public const EMAIL_KEY                 = KEY . '_support_user_email';
+	public const EMAIL_DEFAULT             = '';
+
+	protected const SETTING_KEYS = array(
+		self::ENABLE_KEY,
+		self::DELETE_AFTER_DAYS_KEY,
+	);
+
 	public const CREATE_QUERY_KEY           = KEY . '_create_support_user';
 	public const DELETE_QUERY_KEY           = KEY . '_delete_support_user';
 	public const RECREATE_QUERY_KEY         = KEY . '_recreate_support_user';
@@ -36,14 +42,16 @@ class SupportUser extends Page {
 	protected const SHARE_PASSWORD_QUERY_KEY = KEY . '_share_support_user_password';
 	protected const SHARE_MESSAGE_QUERY_KEY  = KEY . '_share_support_user_message';
 
-	public const EMAIL_HOOK = self::KEY . '_email';
-
-	protected const SETTING_KEYS = array(
-		self::ENABLE_KEY,
-		self::DELETE_AFTER_DAYS_KEY,
-	);
+	public const ENABLE_HOOK = KEY . '_enable_support_user';
+	public const EMAIL_HOOK  = self::KEY . '_email';
 
 	public function __construct() {
+		add_action( 'deleted_user', array( $this, 'delete_data_when_user_deleted' ) );
+
+		if ( ! apply_filters( static::ENABLE_HOOK, true ) ) {
+			return;
+		}
+
 		parent::__construct();
 		ActionQuery::add( static::CREATE_QUERY_KEY, array( $this, 'handle_create_user' ) );
 		ActionQuery::add( static::DELETE_QUERY_KEY, array( $this, 'handle_delete_user' ) );
@@ -51,7 +59,6 @@ class SupportUser extends Page {
 		ActionQuery::add( static::SHARE_EMAIL_QUERY_KEY, array( $this, 'handle_share_to_email' ), false );
 		ActionQuery::add( static::UPDATE_CREATE_AT_QUERY_KEY, array( $this, 'handle_update_create_at' ) );
 		add_action( 'update_option_' . static::ENABLE_KEY, array( $this, 'delete_user_if_disabled' ), 10, 2 );
-		add_action( 'deleted_user', array( $this, 'delete_data_when_user_deleted' ) );
 		add_action( 'admin_init', array( $this, 'delete_user_after_days' ) );
 	}
 
@@ -179,21 +186,24 @@ class SupportUser extends Page {
 					</li>
 				<?php } ?>
 				<li>
-					<a
-						href="<?php echo esc_url( ActionQuery::get_url( static::RECREATE_QUERY_KEY ) ); ?>"
-						onclick="return confirm('<?php echo esc_js( static::get_recreation_confirmation_massage() ); ?>')"
-					>
-						<?php echo esc_html__( 'Recreate user', 'development-assistant' ); ?>
-					</a>
+					<?php
+					( new Link(
+						__( 'Recreate user', 'development-assistant' ),
+						ActionQuery::get_url( static::RECREATE_QUERY_KEY ),
+						static::get_recreation_confirmation_massage()
+					) )->render();
+					?>
 				</li>
 				<li>
-					<a
-						href="<?php echo esc_url( ActionQuery::get_url( static::DELETE_QUERY_KEY ) ); ?>"
-						onclick="return confirm('<?php echo esc_js( static::get_deletion_confirmation_massage() ); ?>')"
-						class="da-support-user__link-danger"
-					>
-						<?php echo esc_html__( 'Delete user', 'development-assistant' ); ?>
-					</a>
+					<?php
+					( new Link(
+						__( 'Delete user', 'development-assistant' ),
+						ActionQuery::get_url( static::DELETE_QUERY_KEY ),
+						static::get_deletion_confirmation_massage(),
+						false,
+						'da-support-user__link-danger'
+					) )->render();
+					?>
 				</li>
 			</ul>
 			<?php if ( ! $is_password_shown ) { ?>
@@ -406,9 +416,9 @@ class SupportUser extends Page {
 			<br><br>
 			<b><?php echo esc_html__( 'Message from customer', 'development-assistant' ); ?>:</b>
 			<br>
-			<?php echo esc_html( $message ); ?>
-		<?php } ?>
-		<?php
+			<?php
+			echo esc_html( $message );
+		}
 		return ob_get_clean();
 	}
 
@@ -492,7 +502,7 @@ class SupportUser extends Page {
 	}
 
 	public static function is_current_user(): bool {
-		return get_current_user_id() === intval( get_option( Setting\SupportUser::ID_KEY, Setting\SupportUser::ID_DEFAULT ) );
+		return get_current_user_id() === intval( get_option( static::ID_KEY, static::ID_DEFAULT ) );
 	}
 
 	/**
@@ -521,6 +531,10 @@ class SupportUser extends Page {
 	}
 
 	public static function add_default_options(): void {
+		if ( ! apply_filters( static::ENABLE_HOOK, true ) ) {
+			return;
+		}
+
 		if ( ! in_array( get_option( static::ENABLE_KEY ), array( 'yes', 'no' ), true ) ) {
 			update_option(
 				static::ENABLE_KEY,

@@ -61,12 +61,17 @@ class PluginsScreen {
 			} elseif ( PluginsScreen\ActivationManager::is_temporarily_deactivated( $plugin_file ) ) {
 				?>
 				<li><?php echo esc_html__( 'Temporarily deactivated', 'development-assistant' ); ?></li>
+				<?php
+			}
+
+			if ( PluginsScreen\Downloader::is_available() ) {
+				?>
+				<li>
+					<a href="<?php echo esc_url( PluginsScreen\Downloader::get_url( $plugin_file ) ); ?>">
+						<?php echo esc_html__( 'Download', 'development-assistant' ); ?>
+					</a>
+				</li>
 			<?php } ?>
-			<li>
-				<a href="<?php echo esc_url( PluginsScreen\Downloader::get_url( $plugin_file ) ); ?>">
-					<?php echo esc_html__( 'Download', 'development-assistant' ); ?>
-				</a>
-			</li>
 		</ul>
 		<?php
 	}

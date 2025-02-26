@@ -158,18 +158,26 @@ class WPDebug {
 	}
 
 	public static function store_original_config_const(): void {
-		update_option(
-			static::ORIGINAL_DEBUG_VALUE_KEY,
-			defined( 'WP_DEBUG' ) ? ( WP_DEBUG ? 'enabled' : 'disabled' ) : 'missing'
-		);
-		update_option(
-			static::ORIGINAL_LOG_VALUE_KEY,
-			defined( 'WP_DEBUG_LOG' ) ? ( WP_DEBUG_LOG ? 'enabled' : 'disabled' ) : 'missing'
-		);
-		update_option(
-			static::ORIGINAL_DISPLAY_VALUE_KEY,
-			defined( 'WP_DEBUG_DISPLAY' ) ? ( WP_DEBUG_DISPLAY ? 'enabled' : 'disabled' ) : 'missing'
-		);
+		if ( ! in_array( get_option( static::ORIGINAL_DEBUG_VALUE_KEY ), array( 'enabled', 'disabled', 'missing' ), true ) ) {
+			update_option(
+				static::ORIGINAL_DEBUG_VALUE_KEY,
+				defined( 'WP_DEBUG' ) ? ( WP_DEBUG ? 'enabled' : 'disabled' ) : 'missing'
+			);
+		}
+
+		if ( ! in_array( get_option( static::ORIGINAL_LOG_VALUE_KEY ), array( 'enabled', 'disabled', 'missing' ), true ) ) {
+			update_option(
+				static::ORIGINAL_LOG_VALUE_KEY,
+				defined( 'WP_DEBUG_LOG' ) ? ( WP_DEBUG_LOG ? 'enabled' : 'disabled' ) : 'missing'
+			);
+		}
+
+		if ( ! in_array( get_option( static::ORIGINAL_DISPLAY_VALUE_KEY ), array( 'enabled', 'disabled', 'missing' ), true ) ) {
+			update_option(
+				static::ORIGINAL_DISPLAY_VALUE_KEY,
+				defined( 'WP_DEBUG_DISPLAY' ) ? ( WP_DEBUG_DISPLAY ? 'enabled' : 'disabled' ) : 'missing'
+			);
+		}
 	}
 
 	/**

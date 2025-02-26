@@ -14,7 +14,15 @@ class Downloader {
 	protected const DOWNLOAD_QUERY_KEY = KEY . '_download_plugin';
 
 	public function __construct() {
+		if ( ! static::is_available() ) {
+			return;
+		}
+
 		ActionQuery::add( static::DOWNLOAD_QUERY_KEY, array( $this, 'handle_download' ) );
+	}
+
+	public static function is_available(): bool {
+		return class_exists( 'ZipArchive' );
 	}
 
 	public static function get_url( string $plugin_file ): string {

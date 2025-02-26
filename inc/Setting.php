@@ -25,10 +25,6 @@ class Setting extends Setting\Page {
 	public const ACTIVE_PLUGINS_FIRST_DEFAULT             = 'yes';
 	public const RESET_KEY                                = KEY . '_reset';
 	public const RESET_DEFAULT                            = 'yes';
-	public const TOGGLE_DEBUG_MODE_QUERY_KEY              = KEY . '_toggle_debug_mode';
-	public const DISABLE_DIRECT_ACCESS_TO_LOG_QUERY_KEY   = KEY . '_disable_direct_access_to_log';
-	public const ENABLE_DEBUG_LOG_QUERY_KEY               = KEY . '_enable_log';
-	public const DISABLE_DEBUG_DISPLAY_QUERY_KEY          = KEY . '_disable_debug_display';
 
 	protected const SETTING_KEYS = array(
 		self::ENABLE_WP_DEBUG_KEY,
@@ -40,6 +36,13 @@ class Setting extends Setting\Page {
 		self::ACTIVE_PLUGINS_FIRST_KEY,
 		self::RESET_KEY,
 	);
+
+	public const TOGGLE_DEBUG_MODE_QUERY_KEY            = KEY . '_toggle_debug_mode';
+	public const DISABLE_DIRECT_ACCESS_TO_LOG_QUERY_KEY = KEY . '_disable_direct_access_to_log';
+	public const ENABLE_DEBUG_LOG_QUERY_KEY             = KEY . '_enable_log';
+	public const DISABLE_DEBUG_DISPLAY_QUERY_KEY        = KEY . '_disable_debug_display';
+
+	public const PAGE_TITLE_HOOK = KEY . '_settings_page_title';
 
 	public function __construct() {
 		parent::__construct();
@@ -53,7 +56,10 @@ class Setting extends Setting\Page {
 	}
 
 	public function add_page(): void {
-		$page_title = __( 'Development Assistant Settings', 'development-assistant' );
+		$page_title = apply_filters(
+			static::PAGE_TITLE_HOOK,
+			__( 'Development Assistant', 'development-assistant' )
+		);
 
 		add_menu_page(
 			$page_title,
@@ -215,18 +221,27 @@ class Setting extends Setting\Page {
 
 	public static function add_default_options(): void {
 		parent::add_default_options();
-		update_option(
-			static::ENABLE_WP_DEBUG_KEY,
-			WPDebug::is_debug_enabled() ? 'yes' : 'no'
-		);
-		update_option(
-			static::ENABLE_WP_DEBUG_LOG_KEY,
-			WPDebug::is_debug_log_enabled() ? 'yes' : 'no'
-		);
-		update_option(
-			static::ENABLE_WP_DEBUG_DISPLAY_KEY,
-			WPDebug::is_debug_display_enabled() ? 'yes' : 'no'
-		);
+
+		if ( ! in_array( get_option( static::ENABLE_WP_DEBUG_KEY ), array( 'yes', 'no' ), true ) ) {
+			update_option(
+				static::ENABLE_WP_DEBUG_KEY,
+				WPDebug::is_debug_enabled() ? 'yes' : 'no'
+			);
+		}
+
+		if ( ! in_array( get_option( static::ENABLE_WP_DEBUG_LOG_KEY ), array( 'yes', 'no' ), true ) ) {
+			update_option(
+				static::ENABLE_WP_DEBUG_LOG_KEY,
+				WPDebug::is_debug_log_enabled() ? 'yes' : 'no'
+			);
+		}
+
+		if ( ! in_array( get_option( static::ENABLE_WP_DEBUG_DISPLAY_KEY ), array( 'yes', 'no' ), true ) ) {
+			update_option(
+				static::ENABLE_WP_DEBUG_DISPLAY_KEY,
+				WPDebug::is_debug_display_enabled() ? 'yes' : 'no'
+			);
+		}
 	}
 
 	public function handle_toggle_debug_mode( array $data ): void {
