@@ -121,12 +121,11 @@ var reset = window.wp_dev_assist_plugins_screen.reset;
 var resetQueryKey = window.wp_dev_assist_plugins_screen.deactivation_reset_query_key;
 var deactivationConfirmMessage = window.wp_dev_assist_plugins_screen.deactivation_confirm_message;
 function initActivationManager() {
-  if ('yes' !== hasDeactivatedPlugins) {
-    return;
+  if ('yes' === hasDeactivatedPlugins) {
+    var $btnActivate = $('<a/>');
+    $btnActivate.addClass('button').attr('href', activationUrl).text(activationTitle);
+    $('.bulkactions').after($btnActivate);
   }
-  var $btnActivate = $('<a/>');
-  $btnActivate.addClass('button').attr('href', activationUrl).text(activationTitle);
-  $('.bulkactions').after($btnActivate);
   $('#deactivate-development-assistant').on('click', function (event) {
     event.preventDefault();
     if ('yes' === reset) {

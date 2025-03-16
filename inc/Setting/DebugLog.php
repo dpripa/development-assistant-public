@@ -5,7 +5,7 @@ use Exception;
 use WPDevAssist\ActionQuery;
 use WPDevAssist\Asset;
 use WPDevAssist\Fs;
-use WPDevAssist\Model\Link;
+use WPDevAssist\Model\ActionLink;
 use WPDevAssist\Notice;
 use WPDevAssist\Setting;
 use const WPDevAssist\KEY;
@@ -83,39 +83,33 @@ class DebugLog extends Page {
 	protected function render_actions(): void {
 		$link_delete_log   = ActionQuery::get_url( static::DELETE_LOG_QUERY_KEY, static::get_page_url() );
 		$link_download_log = ActionQuery::get_url( static::DOWNLOAD_LOG_QUERY_KEY, static::get_page_url() );
-		$file_exists       = static::is_file_exists();
+		$is_file_exists    = static::is_file_exists();
 		?>
 		<ul class="da-debug-log__actions">
 			<li>
 					<a
-						class="button button-primary <?php echo $file_exists ? '' : 'button-disabled'; ?>"
-						<?php echo $file_exists ? 'href="' . esc_url( $link_download_log ) . '"' : ''; ?>
+						class="button button-primary <?php echo $is_file_exists ? '' : 'button-disabled'; ?>"
+						<?php echo $is_file_exists ? 'href="' . esc_url( $link_download_log ) . '"' : ''; ?>
 					>
 						<?php echo esc_html__( 'Download', 'development-assistant' ); ?>
 					</a>
 				</li>
 				<li>
 					<?php
-					( new Link(
+					( new ActionLink(
 						__( 'Delete file', 'development-assistant' ),
 						$link_delete_log,
 						static::get_deletion_confirmation_massage(),
 						false,
-						'button button-secondary' . $file_exists ? '' : ' button-disabled'
+						'button button-secondary' . ( $is_file_exists ? '' : ' button-disabled' ),
+						! $is_file_exists
 					) )->render();
 					?>
 				</li>
-				<?php
-				if ( static::is_file_exists() ) {
-					?>
-					<li>
-						<?php $this->render_file_size(); ?>
-					</li>
-					<?php
-				}
-
-				if ( 'yes' === get_option( Setting\DevEnv::ENABLE_KEY, Setting\DevEnv::ENABLE_DEFAULT ) ) {
-					?>
+				<li>
+					<?php $this->render_file_size( $is_file_exists ); ?>
+				</li>
+				<?php if ( 'yes' !== get_option( Setting\DevEnv::ENABLE_KEY, Setting\DevEnv::ENABLE_DEFAULT ) ) { ?>
 					<li>
 						<?php $this->render_direct_access_status(); ?>
 					</li>
@@ -124,8 +118,8 @@ class DebugLog extends Page {
 		<?php
 	}
 
-	protected function render_file_size(): void {
-		$file_size = filesize( static::LOG_FILE_PATH );
+	protected function render_file_size( bool $is_file_exists ): void {
+		$file_size = $is_file_exists ? filesize( static::LOG_FILE_PATH ) : 0;
 		$is_large  = static::NORMAL_SIZE <= $file_size;
 		?>
 		<div class="da-debug-log__status <?php echo $is_large ? 'da-debug-log__status_error' : ''; ?>">

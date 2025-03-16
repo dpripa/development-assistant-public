@@ -1,8 +1,8 @@
 <?php
 namespace WPDevAssist\Assistant;
 
-use WPDevAssist\Model\Link;
+use WPDevAssist\Model\ActionLink;
 
 defined( 'ABSPATH' ) || exit;
 
-class Control extends Link {}
+class Control extends ActionLink {}

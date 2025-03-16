@@ -5,7 +5,7 @@ use Exception;
 use WP_Error;
 use WPDevAssist\ActionQuery;
 use WPDevAssist\Asset;
-use WPDevAssist\Model\Link;
+use WPDevAssist\Model\ActionLink;
 use WPDevAssist\Notice;
 use const WPDevAssist\KEY;
 
@@ -187,7 +187,7 @@ class SupportUser extends Page {
 				<?php } ?>
 				<li>
 					<?php
-					( new Link(
+					( new ActionLink(
 						__( 'Recreate user', 'development-assistant' ),
 						ActionQuery::get_url( static::RECREATE_QUERY_KEY ),
 						static::get_recreation_confirmation_massage()
@@ -196,7 +196,7 @@ class SupportUser extends Page {
 				</li>
 				<li>
 					<?php
-					( new Link(
+					( new ActionLink(
 						__( 'Delete user', 'development-assistant' ),
 						ActionQuery::get_url( static::DELETE_QUERY_KEY ),
 						static::get_deletion_confirmation_massage(),
@@ -379,7 +379,7 @@ class SupportUser extends Page {
 		update_option( static::EMAIL_KEY, $email );
 		Notice::add_transient(
 			sprintf(
-				__( 'Credentials successfully shared this %s.', 'development-assistant' ),
+				__( 'Credentials successfully shared with %s.', 'development-assistant' ),
 				$email
 			),
 			'success'

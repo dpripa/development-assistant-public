@@ -115,7 +115,7 @@ class DevEnv extends Tab {
 		if ( $is_enabled ) {
 			if ( $is_http_host_exists ) {
 				$status_description = sprintf(
-					esc_html__( 'To check if the SMTP host is working, %1$s and check if it arrives in the %2$s.', 'development-assistant' ),
+					esc_html__( 'To check if the SMTP host is responding, %1$s and check if it arrives in the %2$s.', 'development-assistant' ),
 					'<a href="' . ActionQuery::get_url( MailHog::SEND_TEST_EMAIL_QUERY_KEY ) . '">' . esc_html__( 'send a test email', 'development-assistant' ) . '</a>',
 					'<a href="' . MailHog::get_http_host() . '" target="_blank">' . esc_html__( 'MailHog UI', 'development-assistant' ) . '</a>'
 				);

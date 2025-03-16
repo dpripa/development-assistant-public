@@ -35,7 +35,7 @@ class ComposerStaticInit6aa00a9a0d1f22a9fc58c83d4d37c55e
         'WPDevAssist\\Fs' => __DIR__ . '/../..' . '/inc/Fs.php',
         'WPDevAssist\\Htaccess' => __DIR__ . '/../..' . '/inc/Htaccess.php',
         'WPDevAssist\\MailHog' => __DIR__ . '/../..' . '/inc/MailHog.php',
-        'WPDevAssist\\Model\\Link' => __DIR__ . '/../..' . '/inc/Model/Link.php',
+        'WPDevAssist\\Model\\ActionLink' => __DIR__ . '/../..' . '/inc/Model/ActionLink.php',
         'WPDevAssist\\Notice' => __DIR__ . '/../..' . '/inc/Notice.php',
         'WPDevAssist\\PluginsScreen' => __DIR__ . '/../..' . '/inc/PluginsScreen.php',
         'WPDevAssist\\PluginsScreen\\ActivationManager' => __DIR__ . '/../..' . '/inc/PluginsScreen/ActivationManager.php',
